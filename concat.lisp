@@ -32,8 +32,7 @@
                   xs)))
 
 (defproperty xs-is-a-prefix-of-append-xs-ys
-  (xs :value (random-list-of (random-atom))
-   ys :value (random-list-of (random-atom)))
-  (implies (and (true-listp xs) (true-listp ys))
-           (equal (prefix (length xs) (append xs ys))
-                   xs)))
+  (xs :where (true-listp xs) :value (random-list-of (random-atom))
+   ys :where (true-listp ys) :value (random-list-of (random-atom)))
+  (equal (prefix (length xs) (append xs ys))
+         xs))
