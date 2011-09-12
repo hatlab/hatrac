@@ -20,8 +20,20 @@
    ys :value (random-list-of (random-atom)))
   (= (+ (len xs) (len ys)) (len (append xs ys))))
 
+(defproperty append-associative
+  (xs :value (random-list-of (random-atom))
+   ys :value (random-list-of (random-atom))
+   zs :value (random-list-of (random-atom)))
+  (equal (append xs (append ys zs)) (append (append xs ys) zs)))
+
+(defthm xs-is-prefix-of-xs++ys
+  (implies (and (true-listp xs) (true-listp ys))
+           (equal (prefix (length xs) (append xs ys))
+                  xs)))
+
 (defproperty xs-is-a-prefix-of-append-xs-ys
   (xs :value (random-list-of (random-atom))
    ys :value (random-list-of (random-atom)))
-  (equal (prefix (len xs) (append xs ys))
-         xs))
+  (implies (and (true-listp xs) (true-listp ys))
+           (equal (prefix (length xs) (append xs ys))
+                   xs)))
