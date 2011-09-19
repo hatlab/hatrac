@@ -1,0 +1,9 @@
+week ending Monday Sep 19, 2011
+  Caleb - 3 lectures converted
+          merge-sort no admit
+          merge-sort=qsort not proved
+          mux-works not proved
+  Allen - 4 demo (2 lectures)
+          concat inverts blocks not proven
+  For next week:
+    proceeding with new lectures, will come back later to unproven
