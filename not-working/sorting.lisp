@@ -22,13 +22,13 @@
         (t
          ys)))
 
-(defun my-msort (xs)
-  (if (consp (rest xs))
-      (let* ((yszs (dmx xs))
-             (ys (first yszs))
-             (zs (second yszs)))
-        (merge-lists (my-msort ys) (my-msort zs)))
-      xs))
+;(defun my-msort (xs)
+;  (if (consp (rest xs))
+;      (let* ((yszs (dmx xs))
+;             (ys (first yszs))
+;             (zs (second yszs)))
+;        (merge-lists (my-msort ys) (my-msort zs)))
+;      xs))
 
 (defun partition (xs pivot)
   (if (consp xs)
@@ -55,14 +55,31 @@
       (and (<= (first xs) (second xs)) (sortedp (rest xs)))
       t))
 
-(defproperty my-msort-works
-  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
-  (sortedp (my-msort xs)))
+(defun in (x xs)
+  (if (endp (rest xs))
+      (equal x (first xs))
+      (or (equal x (first xs)) (in x (rest xs)))))
+
+(defproperty qsort-preserves-elements
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-rational) :size (1+ (random-data-size)))
+   x :where (in x xs) :value (random-element-of xs))
+  (in x (qsort xs)))
+
+(defproperty qsort-conserves-elements
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-rational) :size (1+ (random-data-size)))
+   x :where (in x (qsort xs)) :value (random-element-of (qsort xs)))
+  (in x xs))
+
+;(defproperty my-msort-works
+;  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
+;  (sortedp (my-msort xs)))
 
 (defproperty qsort-works
   (xs :where (true-listp xs) :value (random-list-of (random-rational)))
   (sortedp (qsort xs)))
 
-(defproperty msort-equals-qsort
-  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
-  (equal (my-msort xs) (qsort xs)))
+;(defproperty msort-equals-qsort
+;  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
+;  (equal (my-msort xs) (qsort xs)))
