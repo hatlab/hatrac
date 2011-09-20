@@ -1,6 +1,6 @@
 (include-book "doublecheck" :dir :teachpacks)
+(include-book "sorting/msort" :dir :system)
 
-;;; TODO: import this from dmx.lisp?
 (defun dmx (xs)
   (cond ((and (consp xs) (consp (rest xs)))
          (let* ((yszs (dmx (rest (rest xs))))
@@ -22,12 +22,12 @@
         (t
          ys)))
 
-(defun msort (xs)
+(defun my-msort (xs)
   (if (consp (rest xs))
       (let* ((yszs (dmx xs))
              (ys (first yszs))
              (zs (second yszs)))
-        (merge-lists (msort ys) (msort zs)))
+        (merge-lists (my-msort ys) (my-msort zs)))
       xs))
 
 (defun partition (xs pivot)
@@ -55,9 +55,9 @@
       (and (<= (first xs) (second xs)) (sortedp (rest xs)))
       t))
 
-(defproperty msort-works
+(defproperty my-msort-works
   (xs :where (true-listp xs) :value (random-list-of (random-rational)))
-  (sortedp (msort xs)))
+  (sortedp (my-msort xs)))
 
 (defproperty qsort-works
   (xs :where (true-listp xs) :value (random-list-of (random-rational)))
@@ -65,4 +65,4 @@
 
 (defproperty msort-equals-qsort
   (xs :where (true-listp xs) :value (random-list-of (random-rational)))
-  (equal (msort xs) (qsort xs)))
+  (equal (my-msort xs) (qsort xs)))
