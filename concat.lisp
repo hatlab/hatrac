@@ -26,10 +26,10 @@
    zs :value (random-list-of (random-atom)))
   (equal (append xs (append ys zs)) (append (append xs ys) zs)))
 
-(defthm xs-is-prefix-of-xs++ys
-  (implies (and (true-listp xs) (true-listp ys))
-           (equal (prefix (length xs) (append xs ys))
-                  xs)))
+;(defthm xs-is-prefix-of-xs++ys
+;  (implies (and (true-listp xs) (true-listp ys))
+;           (equal (prefix (length xs) (append xs ys))
+;                  xs)))
 
 (defproperty xs-is-a-prefix-of-append-xs-ys
   (xs :where (true-listp xs) :value (random-list-of (random-atom))
