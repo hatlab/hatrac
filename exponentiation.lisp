@@ -1,5 +1,6 @@
 (include-book "doublecheck" :dir :teachpacks)
-(include-book "arithmetic-5/top" :dir :system)
+(include-book "arithmetic-3/top" :dir :system)
+(include-book "arithmetic-3/floor-mod/floor-mod" :dir :system)
 
 (defun pow (b n)
   (if (zp n)
