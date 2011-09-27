@@ -70,37 +70,6 @@
          (zs (second yszs)))
   (member-equal xi (append ys (list x) zs))))
 
-(defproperty qsort-preserves-elements
-  (xs :value (random-list-of (random-rational)
-                             :size (1+ (random-data-size)))
-   xi :where (member-equal xi xs)
-     :value (random-element-of xs))
-  (member-equal xi (qsort xs)))
-
-(defproperty qsort-conserves-elements
-  (xs :where (true-listp xs)
-      :value (random-list-of (random-rational)
-                             :size (1+ (random-data-size)))
-   x :where (member-equal x (qsort xs))
-     :value (random-element-of (qsort xs)))
-  (member-equal x xs))
-
-
-(defproperty msort-preserves-elements
-  (xs :value (random-list-of (random-rational)
-                             :size (1+ (random-data-size)))
-   x :where (member-equal x xs)
-     :value (random-element-of xs))
-  (member-equal x (msort xs)))
-
-(defproperty msort-conserves-elements
-  (xs :where (true-listp xs)
-      :value (random-list-of (random-rational)
-                             :size (1+ (random-data-size)))
-   x :where (member-equal x (msort xs))
-     :value (random-element-of (msort xs)))
-  (member-equal x xs))
-
 (defun sortedp (xs)
   (if (consp (rest xs))
       (and (<= (first xs) (second xs)) (sortedp (rest xs)))
@@ -110,10 +79,40 @@
   (xs :value (random-list-of (random-rational)))
   (sortedp (msort xs)))
 
-(defproperty qsort-works
-  (xs :value (random-list-of (random-rational)))
-  (sortedp (qsort xs)))
-
+;(defproperty qsort-works
+;  (xs :value (random-list-of (random-rational)))
+;  (sortedp (qsort xs)))
+;
+;(defproperty qsort-preserves-elements
+;  (xs :value (random-list-of (random-rational)
+;                             :size (1+ (random-data-size)))
+;   xi :where (member-equal xi xs)
+;     :value (random-element-of xs))
+;  (member-equal xi (qsort xs)))
+;
+;(defproperty qsort-conserves-elements
+;  (xs :where (true-listp xs)
+;      :value (random-list-of (random-rational)
+;                             :size (1+ (random-data-size)))
+;   x :where (member-equal x (qsort xs))
+;     :value (random-element-of (qsort xs)))
+;  (member-equal x xs))
+;
+;(defproperty msort-preserves-elements
+;  (xs :value (random-list-of (random-rational)
+;                             :size (1+ (random-data-size)))
+;   x :where (member-equal x xs)
+;     :value (random-element-of xs))
+;  (member-equal x (msort xs)))
+;
+;(defproperty msort-conserves-elements
+;  (xs :where (true-listp xs)
+;      :value (random-list-of (random-rational)
+;                             :size (1+ (random-data-size)))
+;   x :where (member-equal x (msort xs))
+;     :value (random-element-of (msort xs)))
+;  (member-equal x xs))
+;
 ;(defproperty msort-equals-qsort
 ;  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
 ;  (equal (my-msort xs) (qsort xs)))
