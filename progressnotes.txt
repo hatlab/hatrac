@@ -1,4 +1,26 @@
-week ending Monday Sep 19, 2011
+Week ending Monday Sep 19, 2011
+  Caleb - 5 lectures successfully converted
+    working:
+      isort
+      maximum
+      basic-lists
+      basic-boolean-algebra
+      big-distributive-property
+      lg
+    not working:
+      sets
+      reverse
+      running-sum
+      string-maximum
+      avl
+      nat-from-digits
+  Allen - 
+  For next week:
+    proceeding with new lectures, will come back later to unproven
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Week ending Monday Sep 19, 2011
   Caleb - 3 lectures converted
           merge-sort no admit
           merge-sort=qsort not proved
