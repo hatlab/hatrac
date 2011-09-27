@@ -1,8 +1,7 @@
 (include-book "doublecheck" :dir :teachpacks)
-(include-book "sorting/msort" :dir :system)
 
 (defun dmx (xs)
-  (cond ((and (consp xs) (consp (rest xs)))
+  (cond ((consp (rest xs))
          (let* ((yszs (dmx (rest (rest xs))))
                 (ys (first yszs))
                 (zs (second yszs)))
@@ -12,7 +11,7 @@
         (t (list nil nil))))
 
 (defun merge-lists (xs ys)
-  (declare (xargs :measure (+ (len xs) (len ys))))
+  (declare (xargs :measure (+ (acl2-count xs) (acl2-count ys))))
   (cond ((and (consp xs) (consp ys))
          (if (< (first xs) (first ys))
              (cons (first xs) (merge-lists (rest xs) ys))
@@ -22,13 +21,23 @@
         (t
          ys)))
 
-;(defun my-msort (xs)
-;  (if (consp (rest xs))
-;      (let* ((yszs (dmx xs))
-;             (ys (first yszs))
-;             (zs (second yszs)))
-;        (merge-lists (my-msort ys) (my-msort zs)))
-;      xs))
+(defproperty dmx-shortens-list-left
+  (xs :where (consp (rest xs))
+      :value (random-list-of (random-rational)))
+  (< (acl2-count (first (dmx xs))) (acl2-count xs)))
+
+(defproperty dmx-shortens-list-right
+  (xs :where (consp (rest xs))
+      :value (random-list-of (random-rational)))
+  (< (acl2-count (second (dmx xs))) (acl2-count xs)))
+
+(defun msort (xs)
+  (if (consp (rest xs))
+      (let* ((yszs (dmx xs))
+             (ys (first yszs))
+             (zs (second yszs)))
+        (merge-lists (msort ys) (msort zs)))
+      xs))
 
 (defun partition (xs pivot)
   (if (consp xs)
@@ -50,34 +59,59 @@
         (append (qsort ys) (list x) (qsort zs)))
       nil))
 
+(defproperty partition-preserves-elements
+  (xs :value (random-list-of (random-rational)
+                             :size (1+ (random-data-size)))
+   xi :where (member-equal xi xs)
+      :value (random-element-of xs))
+  (let* ((x (first xs))
+         (yszs (partition (rest xs) x))
+         (ys (first yszs))
+         (zs (second yszs)))
+  (member-equal x (append ys (list x) zs))))
+
+;(defproperty qsort-preserves-elements
+;  (xs :value (random-list-of (random-rational)
+;                             :size (1+ (random-data-size)))
+;   x :where (member-equal x xs)
+;     :value (random-element-of xs))
+;  (member-equal x (qsort xs)))
+;
+;(defproperty qsort-conserves-elements
+;  (xs :where (true-listp xs)
+;      :value (random-list-of (random-rational)
+;                             :size (1+ (random-data-size)))
+;   x :where (member-equal x (qsort xs))
+;     :value (random-element-of (qsort xs)))
+;  (member-equal x xs))
+
+
+(defproperty msort-preserves-elements
+  (xs :value (random-list-of (random-rational)
+                             :size (1+ (random-data-size)))
+   x :where (member-equal x xs)
+     :value (random-element-of xs))
+  (member-equal x (msort xs)))
+
+(defproperty msort-conserves-elements
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-rational)
+                             :size (1+ (random-data-size)))
+   x :where (member-equal x (msort xs))
+     :value (random-element-of (msort xs)))
+  (member-equal x xs))
+
 (defun sortedp (xs)
   (if (consp (rest xs))
       (and (<= (first xs) (second xs)) (sortedp (rest xs)))
       t))
 
-(defun in (x xs)
-  (if (endp (rest xs))
-      (equal x (first xs))
-      (or (equal x (first xs)) (in x (rest xs)))))
-
-(defproperty qsort-preserves-elements
-  (xs :where (true-listp xs)
-      :value (random-list-of (random-rational) :size (1+ (random-data-size)))
-   x :where (in x xs) :value (random-element-of xs))
-  (in x (qsort xs)))
-
-(defproperty qsort-conserves-elements
-  (xs :where (true-listp xs)
-      :value (random-list-of (random-rational) :size (1+ (random-data-size)))
-   x :where (in x (qsort xs)) :value (random-element-of (qsort xs)))
-  (in x xs))
-
-;(defproperty my-msort-works
-;  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
-;  (sortedp (my-msort xs)))
+(defproperty msort-works
+  (xs :value (random-list-of (random-rational)))
+  (sortedp (msort xs)))
 
 (defproperty qsort-works
-  (xs :where (true-listp xs) :value (random-list-of (random-rational)))
+  (xs :value (random-list-of (random-rational)))
   (sortedp (qsort xs)))
 
 ;(defproperty msort-equals-qsort
