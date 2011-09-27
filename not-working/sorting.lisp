@@ -68,22 +68,22 @@
          (yszs (partition (rest xs) x))
          (ys (first yszs))
          (zs (second yszs)))
-  (member-equal x (append ys (list x) zs))))
+  (member-equal xi (append ys (list x) zs))))
 
-;(defproperty qsort-preserves-elements
-;  (xs :value (random-list-of (random-rational)
-;                             :size (1+ (random-data-size)))
-;   x :where (member-equal x xs)
-;     :value (random-element-of xs))
-;  (member-equal x (qsort xs)))
-;
-;(defproperty qsort-conserves-elements
-;  (xs :where (true-listp xs)
-;      :value (random-list-of (random-rational)
-;                             :size (1+ (random-data-size)))
-;   x :where (member-equal x (qsort xs))
-;     :value (random-element-of (qsort xs)))
-;  (member-equal x xs))
+(defproperty qsort-preserves-elements
+  (xs :value (random-list-of (random-rational)
+                             :size (1+ (random-data-size)))
+   xi :where (member-equal xi xs)
+     :value (random-element-of xs))
+  (member-equal xi (qsort xs)))
+
+(defproperty qsort-conserves-elements
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-rational)
+                             :size (1+ (random-data-size)))
+   x :where (member-equal x (qsort xs))
+     :value (random-element-of (qsort xs)))
+  (member-equal x xs))
 
 
 (defproperty msort-preserves-elements

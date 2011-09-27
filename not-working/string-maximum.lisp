@@ -11,14 +11,9 @@
       (first ss)
       (string-max (first ss) (maximum (rest ss)))))
 
-(defun in (x xs)
-  (if (endp xs)
-      nil
-      (or (equal x (first xs)) (in x (rest xs)))))
-
 (defproperty maximum-greater-than-any-member-2
   (ss :where (true-listp ss) :value (random-list-of (random-string) :size (1+ (random-data-size)))
-   s :where (in s ss) :value (random-element-of ss))
+   s :where (member-equal s ss) :value (random-element-of ss))
   (integerp (string<= s (maximum ss))))
 
 ;(defproperty maximum-greater-than-any-member
