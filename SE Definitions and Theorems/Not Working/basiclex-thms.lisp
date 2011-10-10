@@ -31,7 +31,7 @@
                 (<= (len (cadr (split-at-delimiter ds xs)))
                     (len xs))))
 
-;(defproperty splitoff-match-delivers-shorter-list-tst
+;(defproperty splitoff-prefix-delivers-shorter-list-tst
 ;  (ps :value (random-list-of (random-char))
 ;   xs :value (random-list-of (random-char))
 ;      :where (and (consp ps)

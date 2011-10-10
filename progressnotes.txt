@@ -1,4 +1,18 @@
-Week ending Monday Sep 19, 2011
+Week ending Monday Oct 10, 2011
+  Caleb - 
+	msort thms admitted
+	numeral stuff - not too far, but partially
+	NEXT WEEK: merge sort continued.
+  Allen - 
+	fibonacci works
+	basiclex mostly works
+	inner-product-and-similarity doesn't work
+	NEXT WEEK: rewrite inner-product-and-similarity stuff for more general numbers
+	
+	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Week ending Monday Sep 26, 2011
   Caleb - 5 lectures successfully converted
     working:
       isort
@@ -14,7 +28,15 @@ Week ending Monday Sep 19, 2011
       string-maximum
       avl
       nat-from-digits
-  Allen - 
+  Allen - 9 more lectures covered
+    working:
+      append
+      demorgans
+      nthcdr
+      rad-rdc-snoc
+      split-blocks-concat
+    not working:
+      mux-dmx
   For next week:
     proceeding with new lectures, will come back later to unproven
 
