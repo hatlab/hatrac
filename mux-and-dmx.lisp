@@ -1,5 +1,8 @@
 (include-book "doublecheck" :dir :teachpacks)
-(include-book "arithmetic-5/top" :dir :system)
+
+;; For auto-ignoring unused mv-let parameters. Dracula doesn't support (declare
+;; (ignore ...)) apparently.
+(set-ignore-ok t)
 
 (defun mux (xs ys)
   (cond ((endp xs) ys)
@@ -72,8 +75,6 @@
    ys :where (and (true-listp ys) (= (len xs) (len ys)))
       :value (random-list-of (random-atom)))
   (equal (every-odd (mux xs ys)) ys))
-
-(set-ignore-ok t)
 
 (defproperty dmx-evens=xs
   (xys :where (true-listp xys) :value (random-list-of (random-atom)))
