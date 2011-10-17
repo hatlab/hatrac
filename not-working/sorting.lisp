@@ -75,11 +75,11 @@
       (and (<= (first xs) (second xs)) (sortedp (rest xs)))
       t))
 
-(defproperty msort-works
+(defproperty msort-sorts
   (xs :value (random-list-of (random-rational)))
   (sortedp (msort xs)))
 
-;(defproperty qsort-works
+;(defproperty qsort-sorts
 ;  (xs :value (random-list-of (random-rational)))
 ;  (sortedp (qsort xs)))
 ;
