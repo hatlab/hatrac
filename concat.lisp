@@ -1,6 +1,7 @@
-(include-book "doublecheck" :dir :teachpacks)
-(include-book "arithmetic-5/top" :dir :system)
+(in-package "ACL2")
 
+(include-book "doublecheck" :dir :teachpacks)
+(include-book "arithmetic-3/top" :dir :system)
 
 (defun concat (xss)
   (if (endp xss)
