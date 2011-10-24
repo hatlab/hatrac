@@ -1,3 +1,18 @@
+Week ending Monday Oct 17, 2011
+  Caleb -
+	Horner's Rule
+	numerals
+	binary adders
+	MARKED FOR LATER: numeral.lisp
+	NEXT WEEK: Continue working on binary adders and big nums
+	
+  Allen -
+	inner-product-and-similarity
+	NEXT WEEK: use arithmetic with inner-product-and-similarity
+		   basiclex
+		   merge mux-dmx
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Week ending Monday Oct 10, 2011
   Caleb - 
 	msort thms admitted
