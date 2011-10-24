@@ -1,3 +1,7 @@
+#|
+
+DEPRECATED.  All functions and theorems are covered by dra/mux-and-dmx.lisp.
+
 (in-package "ACL2")
 (include-book "mux-dmx-defs")
 (include-book "doublecheck" :dir :teachpacks)
@@ -66,3 +70,4 @@
 ;  (equal (mux (car (dmx xys))
 ;              (cadr (dmx xys)))
 ;         xys))
+|#

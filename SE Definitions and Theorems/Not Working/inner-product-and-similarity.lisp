@@ -1,15 +1,18 @@
 (in-package "ACL2")
 
-(defun legit (x) ; x in {-100, -99, ... 100} - {0}
-  (rationalp x))
-
 (defun inner-product (xs ys)
-  (if (or (endp xs) (endp ys))
-      0
-      (if (and (legit (car xs)) (legit (car ys)))
-          (+ (* (car xs) (car ys))
-             (inner-product (cdr xs) (cdr ys)))
-          nil)))
+  (if (consp xs) 
+      (if (consp ys)
+          (if (and (acl2-numberp (car xs)) (acl2-numberp (car ys)))
+              (let* ((ip (inner-product (cdr xs) (cdr ys))))
+                (if (acl2-numberp ip)
+                    (+ (* (car xs) (car ys)) ip)
+                    nil))
+              nil)
+          nil)
+      (if (consp ys)
+          nil
+          0)))
 
 ;(defun inner-product (xs ys) ; inner product, nil if bad data
 ;  (cond ((and (consp xs)
@@ -27,7 +30,7 @@
 
 (defun sim (xs ys) ; "signed" square of cos of angle between xs & ys
   (let* ((ip (inner-product xs ys)))
-    (if ip        ; ensure xs & ys are measurement vectors
+    (if (acl2-numberp ip)        ; ensure xs & ys are measurement vectors
         (/ (* ip (abs ip))
            (* (inner-product xs xs) ; Euclidean lengths squared
               (inner-product ys ys)))

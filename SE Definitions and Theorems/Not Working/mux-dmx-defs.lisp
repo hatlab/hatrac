@@ -1,3 +1,7 @@
+#|
+
+DEPRECATED.  All functions and theorems are covered by dra/mux-and-dmx.lisp.
+
 (in-package "ACL2")
 
 (defun mux (xs ys)
@@ -21,4 +25,4 @@
 
 (defun every-odd (xs)
   (every-other (cdr xs)))
-
+|#
