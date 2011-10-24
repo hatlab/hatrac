@@ -52,6 +52,25 @@
   (xs :value (random-list-of (random-natural)))
   (subsetp xs xs))
 
+(defproperty subset-one-step
+  (xs :value (random-list-of (random-natural))
+   ys :value (random-list-of (random-natural)))
+  (subsetp (my-union (rest xs) ys) (my-union ys (rest xs))))
+
+(defproperty union-commutes-1
+  (xs :where (consp xs) :value (random-list-of (random-natural))
+   ys :where (member-equal (first xs) ys)
+      :value (random-list-of (random-natural)))
+  (subsetp (my-union (rest xs) ys)
+           (my-union ys xs)))
+
+(defproperty union-commutes-2
+  (xs :where (consp xs) :value (random-list-of (random-natural))
+   ys :where (not (member-equal (first xs) ys))
+      :value (random-list-of (random-natural)))
+  (subsetp (my-union (rest xs) ys)
+           (my-union ys xs)))
+
 (defproperty union-commutes
   (xs :value (random-list-of (random-natural))
    ys :value (random-list-of (random-natural)))
