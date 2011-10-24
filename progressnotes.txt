@@ -1,3 +1,14 @@
+Week ending Monday Oct 24, 2011
+  Caleb -
+	binary adder - did not get mul-ok to go through
+	sets stuff - not much
+	NEXT WEEK: finish binary adders and bignums
+		   exam questions
+  Allen -
+	inner-product-and-similarity with arithmetic
+	NEXT WEEK: more inner-product-and-similarity
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Week ending Monday Oct 17, 2011
   Caleb -
 	Horner's Rule
