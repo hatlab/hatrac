@@ -41,3 +41,18 @@
       nil
       (cons (* s (car xs))
             (scale s (cdr xs)))))
+
+(defun multiply (xs ys)
+  (if (or (endp xs) (endp ys))
+      nil
+      (cons (* (car xs) (car ys)) (multiply (cdr xs) (cdr ys)))))
+      
+(defun sum-list (xs)
+  (if (endp xs)
+      0
+      (+ (car xs) (sum-list (cdr xs)))))
+
+(defun zero-vectorp (xs)
+  (if (endp xs)
+      (endp xs)
+      (and (equal (car xs) 0) (zero-vectorp (cdr xs)))))
