@@ -2,7 +2,7 @@
 
 (include-book "doublecheck" :dir :teachpacks)
 
-(include-book "concat")
+(include-book "append")
 
 (include-book "arithmetic-3/floor-mod/floor-mod" :dir :system)
 
@@ -34,7 +34,46 @@
 ;  (= (nat-from-digits b ds)
 ;     (horners-rule b ds)))
 
-(defun num (ds) (horners-rule 2 ds))
+(defun num (x) ; number denoted by binary numeral x
+  (if (consp x)
+      (if (= (first x) 1)
+          (+ 1 (* 2 (num (rest x))))
+          (* 2 (num (rest x))))
+      0))
+(defproperty num-times-2-preserves-positive
+  (bs :value (random-list-of (random-between 0 1)))
+  (implies (> (num (cons 0 bs)) 0) (> (num bs) 0)))
+
+(defun d (bs)
+  (cond ((endp bs)
+         nil)
+        ((= (first bs) 0)
+         (cons 1 (d (rest bs))))
+        (t
+         (cons 0 (rest bs)))))
+
+(defun bitp (b)
+  (or (= b 0) (= b 1)))
+
+(defun bit-listp (xs)
+  (or (endp xs)
+      (and (bitp (first xs))
+           (bit-listp (rest xs)))))
+
+(defproperty d-decrements-value-of-bs
+  (bs :where (and (bit-listp bs) (> (num bs) 0))
+      :value (random-list-of (random-between 0 1)))
+  (= (num (d bs)) (- (num bs) 1)))
+
+(defun s (bs n)
+  (if (zp n)
+      bs
+      (s (cons 0 bs) (- n 1))))
+
+(defproperty up-shift-x-n=2^n*x
+  (bs :value (random-list-of (random-between 0 1))
+   n  :where (natp n) :value (random-natural))
+  (= (num (s bs n)) (* (expt 2 (nfix n)) (num bs))))
 
 (defun bits (n)
   (if (and (integerp n) (> n 0))

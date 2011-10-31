@@ -3,11 +3,6 @@
 (include-book "doublecheck" :dir :teachpacks)
 (include-book "arithmetic-3/top" :dir :system)
 
-(defun concat (xss)
-  (if (endp xss)
-      nil
-      (append (car xss) (concat (cdr xss)))))
-
 (defun prefix (n xs)
   (if (zp n)
       nil
@@ -35,5 +30,21 @@
 (defproperty xs-is-a-prefix-of-append-xs-ys
   (xs :where (true-listp xs) :value (random-list-of (random-atom))
    ys :where (true-listp ys) :value (random-list-of (random-atom)))
-  (equal (prefix (length xs) (append xs ys))
+  (equal (prefix (len xs) (append xs ys))
          xs))
+
+
+(defun concat (xss)
+  (if (endp xss)
+      nil
+      (append (car xss) (concat (cdr xss)))))
+
+(defun sum-of-lens (xss)
+  (if (endp xss)
+      0
+      (+ (len (first xss)) (sum-of-lens (rest xss)))))
+
+(defproperty concat-len-additive
+  (xss :value (random-list-of (random-list-of (random-atom))))
+  (= (len (concat xss)) (sum-of-lens xss)))
+
