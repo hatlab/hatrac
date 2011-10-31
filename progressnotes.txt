@@ -1,3 +1,11 @@
+Week ending Monday Oct 31, 2011
+  Caleb -
+	
+  Allen -
+	yet more inner-product-and-similarity
+	NEXT WEEK: inner-product-and-similarity, part five: the reckoning.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Week ending Monday Oct 24, 2011
   Caleb -
 	binary adder - did not get mul-ok to go through
