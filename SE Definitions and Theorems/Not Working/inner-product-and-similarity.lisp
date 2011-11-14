@@ -1,18 +1,11 @@
 (in-package "ACL2")
 
 (defun inner-product (xs ys)
-  (if (consp xs) 
-      (if (consp ys)
-          (if (and (acl2-numberp (car xs)) (acl2-numberp (car ys)))
-              (let* ((ip (inner-product (cdr xs) (cdr ys))))
-                (if (acl2-numberp ip)
-                    (+ (* (car xs) (car ys)) ip)
-                    nil))
-              nil)
-          nil)
-      (if (consp ys)
-          nil
-          0)))
+  (if (and (consp xs) (consp ys)
+           (rationalp (car xs)) (rationalp (car ys)))
+      (+ (* (car xs) (car ys))
+         (inner-product (cdr xs) (cdr ys)))
+      0))
 
 ;(defun inner-product (xs ys) ; inner product, nil if bad data
 ;  (cond ((and (consp xs)
@@ -29,30 +22,30 @@
    ;   val))
 
 (defun sim (xs ys) ; "signed" square of cos of angle between xs & ys
-  (let* ((ip (inner-product xs ys)))
-    (if (acl2-numberp ip)        ; ensure xs & ys are measurement vectors
-        (/ (* ip (abs ip))
-           (* (inner-product xs xs) ; Euclidean lengths squared
-              (inner-product ys ys)))
-        nil)))
+  (let* ((ip  (inner-product xs ys))
+         (xs2 (inner-product xs xs))
+         (ys2 (inner-product ys ys)))
+    (if (and (/= xs2 0) (/= ys2 0))
+        (/ (* ip (abs ip)) (* xs2 ys2))
+        0)))
 
 (defun scale (s xs) ; scale components by factor s
-  (if (endp xs)
-      nil
+  (if (consp xs)
       (cons (* s (car xs))
-            (scale s (cdr xs)))))
+            (scale s (cdr xs)))
+      nil))
 
 (defun multiply (xs ys)
-  (if (or (endp xs) (endp ys))
-      nil
-      (cons (* (car xs) (car ys)) (multiply (cdr xs) (cdr ys)))))
+  (if (and (consp xs) (consp ys))
+      (cons (* (car xs) (car ys)) (multiply (cdr xs) (cdr ys)))
+      nil))
       
 (defun sum-list (xs)
-  (if (endp xs)
-      0
-      (+ (car xs) (sum-list (cdr xs)))))
+  (if (consp xs)
+      (+ (car xs) (sum-list (cdr xs)))
+      0))
 
 (defun zero-vectorp (xs)
-  (if (endp xs)
-      (endp xs)
-      (and (equal (car xs) 0) (zero-vectorp (cdr xs)))))
+  (if (consp xs)
+      (and (equal (car xs) 0) (zero-vectorp (cdr xs)))
+      t))
