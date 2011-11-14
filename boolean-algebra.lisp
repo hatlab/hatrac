@@ -41,3 +41,37 @@
   (iff (and (implies x y) (implies x (not y))) (not x))
   :rule-classes nil)
 
+; Exams
+
+(defproperty f10-m1-4
+  (a :value (random-boolean)
+   b :value (random-boolean))
+  (implies (not a) (not (and a b)))
+  :rule-classes nil)
+
+(defproperty f10-m1-5
+  (a :value (random-boolean)
+   b :value (random-boolean)
+   c :value (random-boolean))
+  (implies (implies (and a b) c) (implies a (implies b c)))
+  :rule-classes nil)
+
+(defproperty f10-m1-6
+  (a :value (random-boolean)
+   b :value (random-boolean))
+  (implies (and (implies a b) (implies a (not b))) (not a))
+  :rule-classes nil)
+
+(defproperty f10-m1-7
+  (a :value (random-boolean)
+   b :value (random-boolean))
+  (iff (and a (implies a b)) (and a b))
+  :rule-classes nil)
+
+(defproperty f10-m1-8
+  (a :value (random-boolean)
+   b :value (random-boolean)
+   c :value (random-boolean)
+   d :value (random-boolean))
+  (implies (and (and (implies a b) c) d) (implies (implies a b) c))
+  :rule-classes nil)
