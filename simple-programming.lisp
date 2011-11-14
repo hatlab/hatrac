@@ -279,7 +279,19 @@
 
 ;; Mid2 Fall 08
 
+(defun cons-first (x pair)
+  (mv (cons x (mv-nth 0 pair)) (mv-nth 1 pair)))
 
+(defun split-at (n xs)
+  (cond ((endp xs) (mv nil nil))
+        ((zp n) (mv nil xs))
+        (t (cons-first (first xs)
+                       (split-at (- n 1) (rest xs))))))
+
+(defproperty split-at-len-xs
+  (xs :where (true-listp xs) :value (random-list-of (random-natural))
+   ys :value (random-list-of (random-natural)))
+  (equal (split-at (len xs) (append xs ys)) (mv xs ys)))
 
 ()
 

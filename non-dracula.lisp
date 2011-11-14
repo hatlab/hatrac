@@ -1,3 +1,5 @@
+;; Mid2 Fall 08
+
 (encapsulate (((foo *) => *))
   (local (defun foo (x) x)))
 
