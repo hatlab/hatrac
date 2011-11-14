@@ -2,6 +2,13 @@
 (include-book "arithmetic-3/top" :dir :system)
 (include-book "arithmetic-3/floor-mod/floor-mod" :dir :system)
 
+
+(defun bitp (x) (or (= x 0) (= x 1)))
+
+(defun bit-listp (xs)
+  (or (endp xs)
+      (and (bitp (first xs)) (bit-listp (rest xs)))))
+
 ;; Midterm 2 F10
 
 (defun add (n m)
@@ -183,7 +190,7 @@
 ;      (if (= (first ys) 0)
 ;          (pow (mul-num xs xs) (rest ys))
 ;          (mul-num xs (pow (mul-num xs xs) (rest ys))))))
-;
+
 ;(defproperty pow-works
 ;  (xs :value (random-list-of (random-between 0 1))
 ;   ys :value (random-list-of (random-between 0 1)))
@@ -272,26 +279,102 @@
   (n :value (random-natural))
   (= (num (sub (bits n) (bits n))) 0))
 
-;(defproperty sub-n-1-decrements
-;  (n :where (and (natp n) (>= n 1))
-;     :value (random-natural))
-;  (= (num (sub (bits n) '(1))) (- n 1)))
+(defproperty bits-returns-bitlist
+  (n :value (random-natural))
+  (bit-listp (bits n)))
+
+(defun binary-zerop (xs)
+  (or (endp xs)
+      (and (= 0 (first xs))
+           (binary-zerop (rest xs)))))
+
+(defproperty decrement-works
+  (xs :where (and (bit-listp xs) (not (binary-zerop xs)))
+      :value (random-list-of (random-between 0 1)))
+  (= (+ 1 (num (decrement xs))) (num xs)))
+
+(defproperty sub-n-1-decrements-lemma
+  (xs :where (and (bit-listp xs) (not (binary-zerop xs)))
+      :value (random-list-of (random-between 0 1)))
+  (= (num (sub xs '(1))) (- (num xs) 1)))
+
+(defproperty bits->0-returns-nonzero-bitlist
+  (n :where (and (natp n) (> n 0))
+     :value (random-natural))
+  (not (binary-zerop (bits n))))
+
+(defproperty sub-n-1-decrements
+  (n :where (and (natp n) (>= n 1))
+     :value (random-natural))
+  (= (num (sub (bits n) '(1))) (- n 1)))
 
 ;; Mid2 Fall 08
 
-(defun cons-first (x pair)
-  (mv (cons x (mv-nth 0 pair)) (mv-nth 1 pair)))
+(defun cons-left (x xs ys)
+  (mv (cons x xs) ys))
 
 (defun split-at (n xs)
   (cond ((endp xs) (mv nil nil))
         ((zp n) (mv nil xs))
-        (t (cons-first (first xs)
-                       (split-at (- n 1) (rest xs))))))
+        (t (mv-let (left right) (split-at (- n 1) (rest xs))
+                   (cons-left (first xs) left right)))))
 
 (defproperty split-at-len-xs
-  (xs :where (true-listp xs) :value (random-list-of (random-natural))
-   ys :value (random-list-of (random-natural)))
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-natural))
+   ys :where (true-listp ys)
+      :value (random-list-of (random-natural)))
   (equal (split-at (len xs) (append xs ys)) (mv xs ys)))
+
+(defun prefix-match (xs ys)
+  (cond ((endp xs) (mv nil nil ys))
+        ((endp ys) (mv xs nil nil))
+        ((/= (first xs) (first ys)) (mv nil xs ys))
+        (t (mv-let (one two three)
+                   (prefix-match (rest xs) (rest ys))
+                   (mv (cons (first xs) one) two three)))))
+
+(defproperty prefix-match-prefixed-list
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-natural))
+   ys :where (true-listp ys)
+      :value (random-list-of (random-natural)))
+  (equal (prefix-match xs (append xs ys))
+         (mv xs nil ys)))
+
+(defun dup (x) (list x x))
+
+(defun map-dup (xs)
+  (if (endp xs)
+      ()
+      (cons (dup (first xs)) (map-dup (rest xs)))))
+
+(defun concat (xss)
+  (if (endp xss)
+      ()
+      (append (first xss) (concat (rest xss)))))
+
+(defproperty map-dup-doubles-length-concat
+  (xs :value (random-list-of (random-natural)))
+  (= (len (concat (map-dup xs))) (* 2 (len xs))))
+
+(defun increment (xs)
+  (if (endp xs)
+      (list 1)
+      (if (= (first xs) 0)
+          (cons 1 (rest xs))
+          (cons 0 (increment (rest xs))))))
+
+(defproperty increment-works-lemma
+  (xs :where (bit-listp xs)
+      :value (random-list-of (random-between 0 1)))
+  (= (num (increment xs)) (+ 1 (num xs))))
+
+(defproperty increment-works
+  (n :where (natp n) :value (random-natural))
+  (= (num (increment (bits n))) (+ n 1)))
+
+
 
 ()
 
