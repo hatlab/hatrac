@@ -1,6 +1,5 @@
 (include-book "doublecheck" :dir :teachpacks)
 
-
 (defun dmx (xys) ; xys = (x1 y1 x2 y2 x3 y3 ...)
   (if (consp xys)
       (mv-let (ys xs)
@@ -71,6 +70,30 @@
   (xs :value (random-list-of (random-natural)))
   (= (len (insertion-sort xs)) (len xs)))
 
+(defun permutation (xs ys)
+  (cond ((endp xs) (endp ys))
+        ((member-equal (first xs) ys) 
+         (permutation (rest xs) (remove1-equal (first xs) ys)))
+        (t nil)))
+
+(defproperty insertion-sort-permutation-lemma
+  (x  :value (random-natural)
+   xs :value (random-list-of (random-natural)))
+  (member-equal x (insert x xs)))
+
+(defproperty permutation-reflexive
+  (xs :value (random-list-of (random-natural)))
+  (permutation xs xs))
+
+(defproperty remove1-reverses-insert
+  (x  :value (random-natural)
+   xs :value (random-list-of (random-natural)))
+  (equal (remove1-equal x (insert x xs)) xs))
+
+(defproperty insertion-sort-is-a-permutation
+  (xs :value (random-list-of (random-natural)))
+  (permutation xs (insertion-sort xs)))
+
 (defun partial-sums (s xs)
   (if (consp xs)
       (let* ((s+x (+ s (first xs))))
@@ -113,3 +136,12 @@
 (defproperty merge-sort-preserves-len
   (xs :value (random-list-of (random-natural)))
   (= (len (merge-sort xs)) (len xs)))
+
+(defproperty merge-sort-perm-lemma
+  (x  :value (random-natural)
+   xs :where (orderedp xs) :value (random-list-of (random-natural)))
+  (equal (remove1-equal x (merge-sort (cons x xs))) xs))
+
+(defproperty merge-sort-permutation
+  (xs :value (random-list-of (random-natural)))
+  (permutation xs (merge-sort xs)))
