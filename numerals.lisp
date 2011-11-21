@@ -4,6 +4,7 @@
 
 (include-book "append")
 
+(include-book "arithmetic-3/top" :dir :system)
 (include-book "arithmetic-3/floor-mod/floor-mod" :dir :system)
 
 (defun nat-from-digits-r (b ds n)
@@ -81,6 +82,11 @@
             (bits (floor n 2)))
       nil))
 
+(defproperty bits-ok
+  (n :value (random-natural)
+     :where (natp n))
+  (= (num (bits n)) n))
+
 (defproperty num-inverts-bits
   (n :where (natp n) :value (random-natural))
   (= (num (bits n)) n))
@@ -122,8 +128,9 @@
       (first xs)
       (fin (rest xs))))
 
-(defproperty higest-bit-is-1
-  (n :where (and (natp n) (> n 0)) :value (+ 1 (random-natural)))
+(defproperty hi-1
+  (n :where (and (natp n) (> n 0))
+     :value (+ 1 (random-natural)))
   (= (fin (bits n)) 1))
 
 (defun rep (n x)
@@ -131,7 +138,7 @@
       (cons x (rep (- n 1) x))
       nil))
 
-(defproperty len-rep-n=n
+(defproperty len-rep
   (n :where (natp n) :value (random-data-size))
   (= (len (rep n 'x)) n))
       
@@ -144,17 +151,17 @@
 (defproperty len-pad-n=n-left-lemma
   (xs :value (random-list-of (random-atom))
    n :where (and (>= n (len xs)) (integerp n)) :value (random-natural))
-  (= (len (pad n 0 xs)) n))
+  (= (len (append xs (rep (+ n (- (len xs))) 0))) n))
 
 (defproperty len-pad-n=n-right-lemma
   (xs :value (random-list-of (random-atom))
    n :where (and (>= n 0) (< n (len xs)) (integerp n)) :value (random-data-size))
   (= (len (pad n 0 xs)) n))
 
-;(defproperty len-pad-n=n
-;  (n :where (and (>= n 0) (integerp n)) :value (random-natural)
-;   xs :value (random-list-of (random-atom)))
-;  (= (len (pad n 0 xs)) n))
+(defproperty len-pad
+  (n :where (and (>= n 0) (integerp n)) :value (random-natural)
+   xs :value (random-list-of (random-atom)))
+  (= (len (pad n 0 xs)) n))
 
 (defun twos (w n)
   (if (>= n 0)
@@ -165,18 +172,74 @@
   (and (< n (expt 2 w)) (>= n 0)))
 
 (defun in-I- (n w)
-  (and (> n (- (expt 2 w))) (< n 0)))
+  (and (>= n (- (expt 2 w))) (< n 0)))
 
 (defun in-I (n w)
-  (or (in-I+ n w)
-      (in-I- n w)))
+  (and (< n (expt 2 w))
+       (>= n (- (expt 2 w)))))
+
+(defun nats-to-zero (w)
+  (if (zp w)
+    0
+    (nats-to-zero (- w 1))))
+
+(defun log-2 (n)
+  (if (zp n)
+      0
+      (+ 1 (log-2 (floor n 2)))))
+
+(defproperty bits-len
+  (n :where (natp n) :value (random-natural))
+  (= (len (bits n)) (log-2 n)))
+
+(defproperty log-2-inverts-expt-2
+  (n :where (natp n)
+     :value (random-natural))
+  (= (- (log-2 (expt 2 n)) 1) n)
+  :hints (("Goal" :induct (nats-to-zero n))))
+
+(defproperty mod-pfx-0
+  (w :where (natp w) :value (random-data-size))
+  (= (num (prefix w (bits 0))) (mod 0 (expt 2 w))))
+
+(defproperty mod-pfx->0
+  (w :where (natp w) :value (random-data-size)
+   n :where (and (natp n) (> n 0)) :value (random-data-size))
+  (= (num (prefix w (bits 0))) (mod 0 (expt 2 w))))
+
+;(defproperty mod-pfx
+;  (w :where (natp w) :value (random-data-size)
+;   n :where (natp n) :value (random-data-size))
+;  (= (num (prefix w (bits n))) (mod n (expt 2 w)))
+;  :hints (("Goal" :induct (nats-to-zero w))))
+  
+
+;(defproperty bounded-log-2
+;  (w :where (and (natp w) (> w 0))
+;     :value (+ (random-data-size) 1)
+;   n :where (and (natp n)
+;                 (<= (expt 2 (- w 1)) n)
+;                 (< n (expt 2 w)))
+;     :value (random-natural))
+;  (= (log-2 n) w)
+;    :hints (("Goal" :induct (nats-to-zero w))))
+;
+;(defproperty len-bits
+;  (w :where (and (natp w) (> w 0))
+;     :value (random-data-size)
+;   n :where (and (natp n) (<= (expt 2 (- w 1)) n) (< n (expt 2 w)))
+;     :value (mod (random-natural) (expt 2 w)))
+;  (= (len (bits n)) w)
+;  :hints (("Goal" :induct (nats-to-zero w))))
+
+
 
 ;(defproperty 2s-ok-1
 ;  (w :where (natp w) :value (random-data-size)
 ;   n :where (and (integerp n) (in-I+ n w))
-;     :value (random-natural))
+;     :value (mod (random-natural) (expt 2 w)))
 ;  (= (num (twos w n)) n))
-;
+
 ;(defproperty 2s-ok-2
 ;  (w :where (natp w) :value (random-data-size)
 ;   n :where (and (integerp n) (in-I- n w))
@@ -201,19 +264,18 @@
 ;   n :where (and (integerp n) (in-I n w)) :value (random-integer))
 ;  (= (len (twos w n)) w))
 
-(defproperty sign-bit
-  (w :where (natp w) :value (random-data-size)
-   n :where (and (integerp n) (in-I- n w)) :value (random-integer))
-  (= (fin (twos w n)) 1))
+;(defproperty sign-bit
+;  (w :where (natp w) :value (random-data-size)
+;   n :where (and (integerp n) (in-I- n w)) :value (random-integer))
+;  (= (fin (twos w n)) 1))
 
-(defun invert-bits (ds)
-  (if (endp ds)
-      ds
-      (cons (- 1 (car ds)) (invert-bits (cdr ds)))))
+;(defun invert-bits (ds)
+;  (if (endp ds)
+;      ds
+;      (cons (- 1 (car ds)) (invert-bits (cdr ds)))))
 
 ;(defproperty 2s-trick
 ;  (w :where (natp w) :value (random-data-size)
 ;   n :where (and (integerp n) (in-I+ n (- w 1))) :value (random-integer))
 ;  (let ((ds (twos w n)))
 ;    (equal (twos w (- n)) (twos w (+ 1 (num (invert-bits ds)))))))
-
