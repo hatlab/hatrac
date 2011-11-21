@@ -3,6 +3,10 @@
 (include-book "doublecheck" :dir :teachpacks)
 (include-book "arithmetic-5/top" :dir :system)
 
+(defthm x-squared-is-non-neg
+  (implies (rationalp x)
+      (>= (* x x) 0)))
+
 (defproperty ip-type-checking
   (xs :value (random-list-of (random-rational))
    ys :value (random-list-of (random-rational))
