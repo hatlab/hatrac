@@ -85,7 +85,7 @@
 
 (defun bits (n)
   (if (zp n)
-      ()
+      nil
       (cons (mod n 2) (bits (floor n 2)))))
 
 (defun rac (xs)
@@ -342,6 +342,8 @@
   (equal (prefix-match xs (append xs ys))
          (mv xs nil ys)))
 
+;; Final Fall 08
+
 (defun dup (x) (list x x))
 
 (defun map-dup (xs)
@@ -374,9 +376,234 @@
   (n :where (natp n) :value (random-natural))
   (= (num (increment (bits n))) (+ n 1)))
 
+;; (sum xs) defined previously
+
+(defun nats-up-to (n)
+  (if (zp n)
+      nil
+      (cons n (nats-up-to (- n 1)))))
+
+(defproperty sum-of-nats
+  (n :where (natp n) :value (random-natural))
+  (= (sum (nats-up-to n))
+     (* n (+ n 1) 1/2)))
+
+;; Mid2 Spring 08
+
+(defproperty nats-up-to-length
+  (n :where (natp n) :value (random-natural))
+  (= (len (nats-up-to n))
+     n))
+
+(defun double (x) (* 2 x))
+
+(defun double-and-cons (x xs)
+  (cons (double x) xs))
+
+(defun map-double (xs)
+  (if (endp xs)
+      nil
+      (cons (double (first xs))
+            (map-double (rest xs)))))
+
+(defun foldr-double-and-cons (xs)
+  (if (endp xs)
+      nil
+      (double-and-cons (first xs)
+                       (foldr-double-and-cons (rest xs)))))
+
+(defproperty map-double=foldr-double-and-cons
+  (xs :value (random-list-of (random-integer)))
+  (equal (map-double xs)
+         (foldr-double-and-cons xs)))
+
+;; Final Spring 08
+
+;; (all covered elsewhere)
+
+;; Mid2 Fall 07
+
+(defun rdc (xs)
+  (if (endp (rest xs))
+      nil
+      (cons (first xs) (rdc (rest xs)))))
+
+(defproperty rdc-reduces-len-by-1
+  (xs :where (and (true-listp xs) (consp xs))
+      :value (random-list-of (random-atom)))
+  (= (len (rdc xs)) (- (len xs) 1)))
+
+(defun bubble-step (xs)
+  (if (endp (rest xs))
+      xs
+      (if (< (first xs) (second xs))
+          (cons (first xs)
+                (bubble-step (rest xs)))
+          (cons (second xs)
+                (bubble-step (cons (first xs)
+                                   (rest (rest xs))))))))
+
+;; rac defined previously
+
+(defun bubble-sort (xs)
+  (if (endp xs)
+      xs
+      (let ((bubbled (bubble-step xs)))
+        (append (bubble-sort (rdc bubbled))
+                (list (rac bubbled))))))
+
+(defproperty bubble-step-preserves-length
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-integer)))
+  (= (len (bubble-step xs))
+     (len xs)))
+
+;(defproperty bubble-sort-preserves-length
+;  (xs :where (and (true-listp xs) (integer-listp xs))
+;      :value (random-list-of (random-integer)))
+;  (= (len (bubble-sort xs))
+;     (len xs)))
+
+(defun orderedp (xs)
+  (or (not (consp (rest xs))) ; (len xs) < 2
+      (and (<= (first xs) (second xs))
+           (orderedp (rest xs)))))
+
+;; Stated theorem (not proven)
+;(defproperty bubble-sort-sorts
+;  (xs :where (true-listp xs)
+;      :value (random-list-of (random-integer)))
+;  (orderedp (bubble-sort xs)))
+
+;; Final Fall 07
+
+(defun div (num denom)
+  (if (or (zp denom)
+          (zp num)
+          (< num denom))
+      0
+      (+ (div (- num denom) denom) 1)))
+
+(defproperty div-is-positive
+  (n :value (random-natural)
+   b :value (random-natural))
+  (>= (div n b) 0))
+
+(defun remainder (num denom)
+  (- num (* denom (div num denom))))
+
+;(defproperty rem-between-0-and-denom
+;  (n :value (random-natural)
+;   b :value (random-natural))
+;  (and (>= (remainder n b) 0)
+;       (< (remainder n b) b)))
+
+;; Others proved elsewhere
+
+;; Mid2 Spring 07
+
+(defun drop-first (n xs)
+  (if (or (zp n) (endp xs))
+      xs
+      (drop-first (- n 1) (rest xs))))
+
+(defproperty drop-first-over-append
+  (xs :value (random-list-of (random-atom))
+   ys :value (random-list-of (random-atom)))
+  (equal (drop-first (len xs) (append xs ys))
+         ys))
+
+(defun take-first (n xs)
+  (if (or (zp n) (endp xs))
+      nil
+      (cons (first xs)
+            (take-first (- n 1) (rest xs)))))
+
+(defproperty take-first-over-append
+  (xs :where (true-listp xs)
+      :value (random-list-of (random-atom))
+   ys :value (random-list-of (random-atom)))
+  (equal (take-first (len xs) (append xs ys))
+         xs))
+
+;; snoc defined previously
+
+(defun rev (xs)
+  (if (endp xs)
+      xs
+      (snoc (rev (rest xs)) (first xs))))
+
+(defproperty rev-length
+  (xs :value (random-list-of (random-atom)))
+  (= (len (rev xs)) (len xs)))
+
+;; Final Spring 07
+
+(defun russian-peasant-mul (n x)
+  (cond ((zp n) 0)
+        ((oddp n) (+ x (russian-peasant-mul (/ (- n 1) 2)
+                                            (+ x x))))
+        ((evenp n) (russian-peasant-mul (/ n 2)
+                                        (+ x x)))))
+
+(defproperty russian-peasant-mul=n*x
+  (n :where (natp n) :value (random-natural)
+   x :where (rationalp x) :value (random-rational))
+  (= (russian-peasant-mul n x) (* n x)))
+
+(defun insert (x ys)
+  (cond ((endp ys) (list x))
+        ((<= x (first ys)) (cons x ys))
+        (t (cons (first ys) (insert x (rest ys))))))
+
+(defproperty insert-len
+  (x :where (rationalp x) :value (random-rational)
+   ys :value (random-list-of (random-rational)))
+  (= (len (insert x ys)) (+ 1 (len ys))))
+
+;; (orderedp (insert-sort xs)) proved in sorting.lisp
+
+;; Mid2 Fall 06
+
+(defun mem (e xs)
+  (if (endp xs)
+      nil
+      (or (equal e (first xs))
+          (mem e (rest xs)))))
+
+(defproperty mem-rep
+  (x :value (random-atom)
+   e :value (random-element-of (list (random-atom) x))
+   n :value (random-natural))
+  (implies (mem e (rep n x)) (equal e x))
+  :rule-classes nil)
+
+;; Final F06 (MISSING)
+
+;; Mid2 S06
+
+(defun chop (n z xs)
+  (cond ((zp n) nil)
+        ((endp xs) (cons z (chop (- n 1) z xs)))
+        (t (cons (first xs) (chop (- n 1) z (rest xs))))))
+
+(defproperty chop-len
+  (n :where (natp n) :value (random-natural)
+   z :value (random-atom)
+   xs :value (random-list-of (random-atom)))
+  (= (len (chop n z xs)) n))
+
+;; Final S06
+
 
 
 ()
+
+
+
+
+
+
 
 
 
