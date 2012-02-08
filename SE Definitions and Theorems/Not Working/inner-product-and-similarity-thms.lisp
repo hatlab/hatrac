@@ -1,11 +1,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (include-book "inner-product-and-similarity")
 (include-book "doublecheck" :dir :teachpacks)
-(include-book "arithmetic-5/top" :dir :system)
 
 (defthm x-squared-is-non-neg
   (implies (rationalp x)
       (>= (* x x) 0)))
+
+(defproperty euclidean-length-is-positive
+  (xs :value (random-list-of (random-rational))
+      :where (and (rational-listp xs) (consp xs)))
+  (>= (inner-product xs xs) 0))
+
+(include-book "arithmetic-5/top" :dir :system)
 
 (defproperty ip-type-checking
   (xs :value (random-list-of (random-rational))
@@ -110,31 +116,37 @@
         (equal (sim xs ys)
                   (sim (scale s xs) ys)))
 
-(defproperty negative-scaling-negates-sim
+(defproperty negative-scaling-preserves-sim
   (xs :value (random-list-of (random-rational))
    ys :value (random-list-of (random-rational))
    s  :value (random-integer)
       :where (and (rational-listp xs) (rational-listp ys) (consp xs) 
                   (consp ys) (rationalp s) (> 0 s)))
         (equal (sim xs ys)
-                  (- (sim (scale s xs) ys))))
+                  (sim (scale s xs) ys)))
 
-;(defproperty scaling-both-preserves-sim
-;  (xs :value (random-list-of (random-rational))
-;   ys :value (random-list-of (random-rational))
-;   s  :value (random-integer)
-;      :where (and (rational-listp xs) (rational-listp ys) (consp xs) 
-;                  (consp ys) (rationalp s) (not (equal s 0))))
-;        (equal (sim xs ys)
-;                  (sim (scale s xs) (scale s ys))))
+(defproperty scaling-both-preserves-sim
+  (xs :value (random-list-of (random-rational))
+   ys :value (random-list-of (random-rational))
+   s  :value (random-integer)
+      :where (and (rational-listp xs) (rational-listp ys) (consp xs) 
+                  (consp ys) (rationalp s) (not (equal s 0))))
+        (equal (sim xs ys)
+                  (sim (scale s xs) (scale s ys)))
+  :hints (("Goal" :use (positive-scaling-preserves-sim 
+                        negative-scaling-preserves-sim))))
 
-;;;Below this line is as of yet unedited/untested.
-(defproperty sim<=1-lemma
-  (n  :value (random-between 1 100)
-   xs :value (random-list-of (random-rational) :size n)
-   ys :value (random-list-of (random-rational) :size n)
-      :where (and (not (zero-vectorp xs)) (not (zero-vectorp ys)) (= (length xs) (length ys))))
-  (<= (abs (sim xs ys)) 1))
+(defproperty sim-of-equal-vectors-is-one
+  (xs :value (random-list-of (random-rational))
+      :where (rational-listp xs))
+  (= (sim xs xs) 1))
+
+;(defproperty sim<=1-lemma
+;  (n  :value (random-between 1 100)
+;   xs :value (random-list-of (random-rational) :size n)
+;   ys :value (random-list-of (random-rational) :size n)
+;      :where (and (not (zero-vectorp xs)) (not (zero-vectorp ys)) (= (length xs) (length ys))))
+;  (<= (abs (sim xs ys)) 1))
   
 (defproperty different-vectors-less-similar
   (xs :value (random-list-of (random-rational))
@@ -143,10 +155,6 @@
            (>= (sim xs xs)
                (sim xs ys)))
 
-(defproperty sim-of-equal-vectors-is-one
-  (xs :value (random-list-of (random-rational))
-      :where (and (not (zero-vectorp xs)) (rational-listp xs)))
-  (= (sim xs xs) 1))
 
 (defproperty different-vectors-less-similar-2
   (xs :value (random-list-of (random-rational))
