@@ -25,6 +25,8 @@
   (if (and (consp xs) (consp ys))
       (cons (* (car xs) (car ys)) (multiply (cdr xs) (cdr ys)))
       nil))
+
+;(defun divide (xs ys)
       
 (defun sum-list (xs)
   (if (consp xs)
@@ -35,3 +37,8 @@
   (if (consp xs)
       (and (equal (car xs) 0) (zero-vectorp (cdr xs)))
       t))
+
+;(defun square-list (xs)
+;  (if (consp xs)
+;      (cons (* (car xs) (car xs)) (square-list (cdr xs)))
+;      nil))

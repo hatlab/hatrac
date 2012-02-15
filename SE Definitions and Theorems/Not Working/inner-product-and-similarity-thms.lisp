@@ -37,17 +37,6 @@
       :where (and (consp xs) (consp ys)))
   (rationalp (sim xs ys)))
 
-;(defproperty inner-product-definition-lemma
-;  (xs :value (random-list-of (random-rational))
-;   ys :value (random-list-of (random-rational))
-;      :where (and (rational-listp xs) (rational-listp ys)))
-;  (equal (inner-product xs ys)
-;         (sum-list (multiply xs ys))))
-
-;(defthm ip-is-number
-;  (implies (and (rational-listp xs)
-;                (rational-listp ys))
-;           (rationalp (inner-product xs ys))))
 (defthm scaling-base-case
   (equal (inner-product (scale s nil) nil)
          0))
@@ -82,16 +71,6 @@
    y :value (random-rational)
      :where (and (< x 0) (< y 0) (rationalp x) (rationalp y)))
   (< 0 (* x y)))
-
-;(defproperty x-squared-is-non-negative-lemma
-;  (x :value (random-rational)
-;     :where (rationalp x))
-;  (<= 0 (* x x)))
-
-;(defproperty length-squared-is->=-zero-lemma
-;  (xs :value (random-list-of (random-rational))
-;      :where (and (consp xs) (rational-listp xs)))
-;  (>= (inner-product xs xs) 0))
 
 (defproperty scaling-distributes-on-both-sides-lemma
   (xs :value (random-list-of (random-rational))
@@ -141,24 +120,32 @@
       :where (rational-listp xs))
   (= (sim xs xs) 1))
 
+(defproperty cauchy-schwarz-inequality
+  (xs :value (random-list-of (random-rational))
+   ys :value (random-list-of (random-rational))
+      :where (and (rational-listp xs) (rational-listp ys) (= (len xs) (len ys))))
+  (<= (* (inner-product xs ys) (inner-product xs ys)) 
+      (* (inner-product xs xs) (inner-product ys ys)))
+  :hints (("Goal" :induct (and (len xs) (len ys)))))
+
 ;(defproperty sim<=1-lemma
 ;  (n  :value (random-between 1 100)
 ;   xs :value (random-list-of (random-rational) :size n)
 ;   ys :value (random-list-of (random-rational) :size n)
-;      :where (and (not (zero-vectorp xs)) (not (zero-vectorp ys)) (= (length xs) (length ys))))
+;      :where (and (rational-listp xs) (rational-listp ys)))
 ;  (<= (abs (sim xs ys)) 1))
   
 (defproperty different-vectors-less-similar
   (xs :value (random-list-of (random-rational))
    ys :value (random-list-of (random-rational))
-      :where (and (not (zero-vectorp xs)) (not (zero-vectorp ys)) (= (length xs) (length ys))))
+      :where (and (rational-listp xs) (rational-listp ys)))
            (>= (sim xs xs)
                (sim xs ys)))
 
 
 (defproperty different-vectors-less-similar-2
   (xs :value (random-list-of (random-rational))
-      :where (and (not (zero-vectorp xs)) (rational-listp xs)))
+      :where (and (rational-listp xs) (consp xs)))
            (< (sim (cons 1 xs) (cons 2 xs))
               (sim (cons 1 xs) (cons 1 xs))))
 
