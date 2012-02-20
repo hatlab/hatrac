@@ -34,9 +34,6 @@
 (defproperty len-is-natural-number
   (xs :value (random-list-of (random-integer)))
   (natp (len xs)))
-(defproperty len-is-natural-n
-  (xs :value (random-list-of (random-integer)))
-  (natp (len xs)))
 (defproperty len-def-tst
   (xs :value (random-list-of (random-integer))
       :where (consp xs))

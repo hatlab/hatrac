@@ -6,7 +6,7 @@
   (implies (rationalp x)
       (>= (* x x) 0)))
 
-(defproperty euclidean-length-is-positive
+(defproperty euclidean-length-squared-is-positive
   (xs :value (random-list-of (random-rational))
       :where (and (rational-listp xs) (consp xs)))
   (>= (inner-product xs xs) 0))
@@ -120,13 +120,18 @@
       :where (rational-listp xs))
   (= (sim xs xs) 1))
 
+(defthm cauchy-schwarz-inequality-thm
+  (implies (and (rational-listp xs) (rational-listp ys) 
+                (= (len xs) (len ys)))
+           (<= (* (inner-product xs ys) (inner-product xs ys)) 
+               (* (inner-product xs xs) (inner-product ys ys)))))
+
 (defproperty cauchy-schwarz-inequality
   (xs :value (random-list-of (random-rational))
    ys :value (random-list-of (random-rational))
       :where (and (rational-listp xs) (rational-listp ys) (= (len xs) (len ys))))
   (<= (* (inner-product xs ys) (inner-product xs ys)) 
-      (* (inner-product xs xs) (inner-product ys ys)))
-  :hints (("Goal" :induct (and (len xs) (len ys)))))
+      (* (inner-product xs xs) (inner-product ys ys))))
 
 ;(defproperty sim<=1-lemma
 ;  (n  :value (random-between 1 100)
