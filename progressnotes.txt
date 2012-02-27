@@ -1,3 +1,22 @@
+Week ending Monday, Feb 27, 2012
+  Table of function and property definition estimates
+                       Caleb      Allen
+  fns def               141        26
+  props def             166        55
+  props proved          114        48
+  fns expected (total)  281       115-160
+  props expected (tot)  330       145-190
+  hrs invested          220        80
+
+Property Categories
+  E  (f x) = (g x)       function equality (formerly, C commutative diagram)
+  R  (f (g x)) = x       round trip
+  P  (p x) -> (p (f x))  property preservation
+  T  expr has type t     type
+  BO binary-op property  associative, commutative, idempotent, null op, id op, ...
+  O  other
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Week ending Monday Oct 31, 2011
   Caleb -
 	
