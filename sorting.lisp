@@ -137,11 +137,11 @@
   (xs :value (random-list-of (random-natural)))
   (= (len (merge-sort xs)) (len xs)))
 
-(defproperty merge-sort-perm-lemma
-  (x  :value (random-natural)
-   xs :where (orderedp xs) :value (random-list-of (random-natural)))
-  (equal (remove1-equal x (merge-sort (cons x xs))) xs))
-
-(defproperty merge-sort-permutation
-  (xs :value (random-list-of (random-natural)))
-  (permutation xs (merge-sort xs)))
+;(defproperty merge-sort-perm-lemma
+;  (x  :value (random-natural)
+;   xs :where (orderedp xs) :value (random-list-of (random-natural)))
+;  (equal (remove1-equal x (merge-sort (cons x xs))) xs))
+;
+;(defproperty merge-sort-permutation
+;  (xs :value (random-list-of (random-natural)))
+;  (permutation xs (merge-sort xs)))
