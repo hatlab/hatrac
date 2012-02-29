@@ -1,4 +1,5 @@
 (include-book "basiclex")
+(include-book "../Working/split-blocks-concat-defs")
 (include-book "doublecheck" :dir :teachpacks)
 
 (defproperty split-at-delim-conserves-vals-tst
@@ -23,13 +24,11 @@
       :where (consp (cadr (split-at-delimiter ds xs))))
   (member-equal (car (cadr (split-at-delimiter ds xs))) ds))
 
-(defproperty split-at-delim-does-not-deliver-longer-lists-tst
-  (ds :value (random-list-of (random-char))
-   xs :value (random-list-of (random-char)))
-  (and (<= (len (car (split-at-delimiter ds xs)))
-                    (len xs))
-                (<= (len (cadr (split-at-delimiter ds xs)))
-                    (len xs))))
+;(defproperty concat-inverts-split-at-delim
+;  (ds :value (random-list-of (random-char))
+;   xs :value (random-list-of (random-char))
+;      :where (and (true-listp xs) (true-listp ds)))
+;  (equal (concat (split-at-delimiter ds xs)) xs))
 
 ;(defproperty splitoff-prefix-delivers-shorter-list-tst
 ;  (ps :value (random-list-of (random-char))
@@ -38,7 +37,26 @@
 ;                  (not (null (car (splitoff-prefix ps xs))))))
 ;  (< (len (caddr (splitoff-prefix ps xs)))
 ;              (len xs)))
-;
+
+(defproperty append-pseudoinverts-splitoff-prefix-1
+  (ps :value (random-list-of (random-char))
+   xs :value (random-list-of (random-char)))
+  (equal (append (car (splitoff-prefix ps xs)) 
+                 (caddr (splitoff-prefix ps xs)))
+         xs))
+
+(defproperty append-pseudoinverts-splitoff-prefix-2
+  (ps :value (random-list-of (random-char))
+   xs :value (random-list-of (random-char)))
+  (equal (append (car (splitoff-prefix ps xs)) 
+                 (cadr (splitoff-prefix ps xs)))
+         ps))
+  
+(defproperty concat-inverts-split-on-token
+  (tok :value (random-list-of (random-char))
+   xs  :value (random-list-of (random-char)))
+  (equal (concat (split-on-token tok xs)) xs))
+
 ;(defproperty split-on-token-delivers-shorter-list-tst
 ;  (tok :value (random-list-of (random-char))
 ;   xs  :value (random-list-of (random-char))
