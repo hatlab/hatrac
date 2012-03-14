@@ -30,8 +30,31 @@
 
 ;Still not working - ARS 9/19/11
 (defproperty blocks-inv-tst
-  (n  :value (random-integer)
+  (n  :value (random-data-size)
       :where (posp n)
    xs :value (random-list-of (random-symbol)))
   (equal (concat (blocks n xs)) xs)
   :hints (("Goal" :use concat-conservation-tst)))
+
+;New Properties: - ARS 03/12/12
+(defproperty firstN-preserves-elements
+  (n  :value (random-natural)
+      :where (posp n)
+   xs :value (random-list-of (random-symbol))
+   k  :value (random-between 0 (1- n))
+      :where (and (>= k 0) (<= k (1- n))))
+  (equal (nth k xs) (nth k (firstN n xs))))
+
+(defproperty second-element-of-split-is-shorter
+  (n  :value (random-natural)
+      :where (posp n)
+   xs :value (random-list-of (random-symbol))
+      :where (consp xs))
+  (> (length xs) (length (cadr (split n xs)))))
+
+(defproperty second-element-of-split-is-nthcdr
+  (n  :value (random-natural)
+      :where (posp n)
+   xs :value (random-list-of (random-symbol))
+      :where (consp xs))
+  (equal (nthcdr n xs) (cadr (split n xs))))
