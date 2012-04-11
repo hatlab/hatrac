@@ -137,6 +137,30 @@
   (xs :value (random-list-of (random-natural)))
   (= (len (merge-sort xs)) (len xs)))
 
+(defproperty mrg-conserves-values
+  (xs :value (random-list-of (random-natural))
+   ys :value (random-list-of (random-natural))
+   e  :value (random-natural))
+  (implies (or (member-equal e xs)
+               (member-equal e ys))
+           (member-equal e (mrg xs ys))))
+
+(defproperty dmx-conserves-values
+  (xs :value (random-list-of (random-natural))
+      :where (true-listp xs)
+   e  :value (random-natural))
+  (mv-let (ys zs)
+          (dmx xs)
+          (implies (or (member-equal e ys)
+                       (member-equal e zs))
+                   (member-equal e xs))))
+
+(defproperty merge-sort-conserves-values
+  (xs :value (random-list-of (random-natural))
+   e  :value (random-natural))
+  (implies (member-equal e xs)
+           (member-equal e (merge-sort xs))))
+
 ;(defproperty merge-sort-perm-lemma
 ;  (x  :value (random-natural)
 ;   xs :where (orderedp xs) :value (random-list-of (random-natural)))

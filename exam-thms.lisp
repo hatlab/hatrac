@@ -595,13 +595,507 @@
 
 ;; Final S06
 
+;; rac defined earlier
 
+(defun append-reverse (xs ys)
+  (if (endp xs)
+      ys
+      (append-reverse (rest xs) (cons (first xs) ys))))
 
-()
+(defproperty append-reverse-first-element
+  (xs :value (random-list-of (random-atom))
+      :where (consp xs)
+   ys :value (random-list-of (random-atom)))
+  (equal (car (append-reverse xs ys))
+         (rac xs)))
 
+(defproperty append-reverse-works
+  (xs :value (random-list-of (random-atom))
+   ys :value (random-list-of (random-atom)))
+  (equal (append-reverse xs ys)
+         (append (rev xs) ys)))
 
+(defun size (tree)
+  (if (endp tree)
+      0
+      (+ (size (third tree))
+         1
+         (size (fourth tree)))))
 
+(defun flatten (tree)
+  (if (endp tree)
+      nil
+      (append (flatten (third tree))
+              (list (first tree))
+              (flatten (fourth tree)))))
 
+(defrandom random-tree-size (size)
+  (cond ((zp size) nil)
+        ((random-boolean) nil)
+        (t (list (random-rational)
+              (random-atom)
+              (random-tree-size (- size 1))
+              (random-tree-size (- size 1))))))
+
+(defrandom random-tree ()
+  (random-tree-size (random-data-size)))
+
+(defthm flatten-lemma
+   (true-listp (flatten tree)))
+
+(defthm flatten-lemma2
+   (= (len (append xs (list x) ys))
+      (+ (len xs) (len ys) 1)))
+
+;(defthm flatten-lemma3
+;   (implies (consp tree)
+;            (= (len (flatten tree))
+;               (+ 1 (len (flatten (third tree)))
+;                    (len (flatten (fourth tree)))))))
+
+(defproperty flatten-has-size-elems
+  (tree :value (random-tree))
+  (= (len (flatten tree))
+     (size tree)))
+
+(defun del (e xs)
+  (cond ((endp xs) nil)
+        ((equal (first xs) e) (del e (rest xs)))
+        (t (cons (first xs) (del e (rest xs))))))
+
+(defun in (e xs)
+  (if (endp xs)
+      nil
+      (or (equal (first xs) e)
+          (in e (rest xs)))))
+
+(defproperty del-works
+  (xs :value (random-list-of (random-natural))
+   e :value (random-natural))
+  (not (in e (del e xs))))
+
+;; Spring 05
+
+;; Mid2
+
+(defproperty double-distributes-over-sum
+  (xs :value (random-list-of (random-rational)))
+  (= (sum (map-double xs))
+     (double (sum xs))))
+
+;(defproperty maximum-binary-numeral
+;  (n :value (random-natural)
+;     :where (natp n))
+;  (> (expt 2 (len (bits n))) n))
+
+;; Final
+
+(defun foldr-cons (x ys)
+  (if (endp ys)
+      x
+      (cons (first ys) (foldr-cons x (rest ys)))))
+
+(defproperty append-using-foldr-cons
+  (xs :value (random-list-of (random-atom))
+   ys :value (random-list-of (random-atom)))
+  (equal (foldr-cons ys xs)
+         (append xs ys)))
+
+(defproperty insert-type
+  (x :value (random-rational)
+   xs :value (random-list-of (random-rational)))
+  (implies (true-listp xs)
+           (true-listp (insert x xs))))
+
+(defproperty first-insert-<=-inserted-elem
+  (x :value (random-rational)
+   xs :value (random-list-of (random-rational)))
+  (<= (first (insert x xs))
+      x))
+
+(defproperty insert-increments-length
+  (x :value (random-rational)
+   xs :value (random-list-of (random-rational)))
+  (= (len (insert x xs))
+     (+ 1 (len xs))))
+
+(defun flatten-tail (tree xs)
+  (if (endp tree)
+      xs
+      (flatten-tail (third tree)
+                    (cons (first tree)
+                          (flatten-tail (fourth tree) xs)))))
+
+(defproperty flatten-tail-length
+  (tree :value (random-tree)
+   xs :value (random-list-of (random-atom)))
+  (= (len (flatten-tail tree xs))
+     (+ (size tree) (len xs))))
+
+;; Fall 04
+
+;; Mid2
+
+(defun replace-with (xs c)
+  (if (endp xs)
+      nil
+      (cons c (replace-with (rest xs) c))))
+
+(defproperty len-same-as-sum-replace-with-1
+  (xs :value (random-list-of (random-atom)))
+  (= (sum (replace-with xs 1))
+     (len xs)))
+
+(defun inc (k)
+  (+ k 1))
+
+(defproperty inc-type
+  (k :value (random-rational))
+  (implies (rationalp k)
+           (rationalp (inc k))))
+
+;; Final
+
+(defun sumr (z xs)
+  (if (endp xs)
+      z
+      (sumr (+ z (first xs)) (rest xs))))
+
+(defproperty sumr-type
+  (z :value (random-rational)
+   xs :value (random-list-of (random-rational)))
+  (implies (and (rationalp z)
+                (rational-listp xs))
+           (rationalp (sumr z xs))))
+
+(defun ps-+ (z xs)
+  (if (endp xs)
+      (list z)
+      (cons z (ps-+ (+ z (first xs)) (rest xs)))))
+
+(defproperty ps-len
+  (z :value (random-rational)
+   xs :value (random-list-of (random-rational)))
+  (= (len (ps-+ z xs))
+     (+ 1 (len xs))))
+
+;(defproperty rac-ps-+-=-sum
+;  (xs :value (random-list-of (random-rational))
+;      :where (rational-listp xs))
+;  (= (rac (ps-+ 0 xs))
+;     (sumr 0 xs)))
+
+(defun key-in-tree (e tree)
+  (if (endp tree)
+      nil
+      (or (equal e (first tree))
+          (key-in-tree e (third tree))
+          (key-in-tree e (fourth tree)))))
+
+(defproperty in-tree-implies-in-flatten-tree
+  (tree :value (random-tree)
+   e :value (random-natural))
+  (implies (key-in-tree e tree)
+           (member e (flatten tree))))
+
+;; Fall 03
+
+;; Mid2
+
+(defun double-second (x y)
+  (declare (ignore x))
+  (* 2 y))
+
+(defun foldr-d (k xs)
+  (if (endp xs)
+      k
+      (double-second (first xs)
+                     (foldr-d k (rest xs)))))
+
+(defproperty foldr-d=expt-2
+  (xs :value (random-list-of (random-rational)))
+  (= (foldr-d 1 xs)
+     (expt 2 (len xs))))
+
+(defun map-sqr (xs)
+  (if (endp xs)
+      nil
+      (cons (* (first xs) (first xs))
+            (map-sqr (rest xs)))))
+
+(defun zip-with-* (xs ys)
+  (if (or (endp xs) (endp ys))
+      nil
+      (cons (* (first xs) (first ys))
+            (zip-with-* (rest xs) (rest ys)))))
+
+(defproperty map-sqr=zip-with-*
+  (xs :value (random-list-of (random-natural)))
+  (equal (map-sqr xs)
+         (zip-with-* xs xs)))
+
+;; Final
+
+(defun add-back (xs ys)
+  (if (endp xs)
+      ys
+      (add-back (rest xs)
+                (cons (first xs) ys))))
+
+(defproperty add-back-len-additive
+  (xs :value (random-list-of (random-natural))
+   ys :value (random-list-of (random-natural)))
+  (= (len (add-back xs ys))
+     (+ (len xs) (len ys))))
+
+(defproperty first-add-back-nil-ys-is-y
+  (ys :value (random-list-of (random-natural)))
+  (equal (first (add-back nil ys))
+         (first ys)))
+
+(defproperty first-add-back-xs-ys-is-rac-xs
+  (xs :value (random-list-of (random-natural))
+   ys :value (random-list-of (random-natural)))
+  (implies (consp xs)
+           (equal (first (add-back xs ys))
+                  (rac xs))))
+
+; Node format: (cons left right) or just a character
+(defun decode (tree bs)
+  (cond ((atom tree) tree)
+        ((endp bs) nil)
+        ((first bs) (decode (car tree) (rest bs)))
+        (t (decode (cdr tree) (rest bs)))))
+
+(defun code-tree-has (tree letter)
+  (if (atom tree)
+      (eql tree letter)
+      (or (code-tree-has (car tree) letter)
+          (code-tree-has (cdr tree) letter))))
+
+(defrandom random-code-tree ()
+  (cons #\a #\b))
+
+;(defproperty code-tree-has->path-exists
+;  (tree :value (random-code-tree)
+;   letter :value (random-char)
+;   bs :value (random-list-of (random-boolean)))
+;  (implies (code-tree-has tree letter)
+;           (eql (decode tree bs)
+;                letter)))
+
+;; Spring 03
+
+(defun map-len (xs)
+  (if (endp xs)
+      nil
+      (cons (len (first xs))
+            (map-len (rest xs)))))
+
+(defproperty map-len-simple
+  (a :value (random-atom))
+  (equal (map-len (list nil (cons a nil) nil))
+         (list 0 (+ 1 0) 0)))
+
+(defproperty rac-=-nth-len
+  (xs :value (random-list-of (random-atom)
+                             :size (1+ (random-data-size))))
+  (equal (nth (1- (len xs)) xs)
+         (rac xs)))
+
+(defproperty take-first-len
+  (xs :value (random-list-of (random-atom))
+   n :value (random-data-size)
+     :where (natp n))
+  (<= (len (take-first n xs))
+      n))
+
+(defproperty rev-member
+  (xs :value (random-list-of (random-rational))
+   e :value (random-rational))
+  (iff (member e (rev xs))
+       (member e xs)))
+
+(defun throdds (xs)
+  (cond ((endp xs) nil)
+        ((endp (rest xs)) nil)
+        ((endp (rest (rest xs))) nil)
+        (t (cons (third xs)
+                 (throdds (rest (rest (rest xs))))))))
+
+;(defproperty len-throdds
+;  (xs :value (random-list-of (random-atom)
+;                             :size (* 3 (random-data-size))))
+;  (implies (= (mod (len xs) 3) 0)
+;           (= (len (throdds xs))
+;              (floor (len xs) 3))))
+
+(defun sum-tree (tree)
+  (if (endp tree)
+      0
+      (+ (sum-tree (third tree))
+         (first tree)
+         (sum-tree (fourth tree)))))
+
+(defrandom random-rational-tree-size (size)
+  (cond ((zp size) nil)
+        ((random-boolean) nil)
+        (t (list (random-rational)
+              (random-rational)
+              (random-rational-tree-size (- size 1))
+              (random-rational-tree-size (- size 1))))))
+
+(defrandom random-rational-tree ()
+  (random-rational-tree-size (random-data-size)))
+
+(defproperty sum-tree=sum-flatten-tree
+  (tree :value (random-rational-tree))
+  (= (sum-tree tree)
+     (sum (flatten tree))))
+
+;; Fall 02
+
+;; Mid2
+
+(defun foldr- (z xs)
+  (if (endp xs)
+      z
+      (- (first xs) (foldr- z (rest xs)))))
+
+(defproperty foldr-minus-test
+  (x :value (random-rational)
+   y :value (random-rational)
+   z :value (random-rational))
+  (= (foldr- 0 (list x y z))
+     (+ (- x y) z)))
+
+(defun filter-with (bs xs)
+  (if (or (endp bs) (endp xs))
+      nil
+      (if (first bs)
+          (cons (first xs) (filter-with (rest bs) (rest xs)))
+          (filter-with (rest bs) (rest xs)))))
+
+(defproperty filter-with-type
+  (bs :value (random-list-of (random-boolean))
+   xs :value (random-list-of (random-atom)))
+  (true-listp (filter-with bs xs)))
+
+(defun cc (xs)
+  (if (endp xs)
+      nil
+      (cons (first xs)
+            (cons (first xs)
+                  (cc (rest xs))))))
+
+(defproperty cc-len
+  (xs :value (random-list-of (random-atom)))
+  (= (len (cc xs))
+     (* 2 (len xs))))
+
+(defproperty drop-first-len
+  (xs :value (random-list-of (random-atom))
+   n :value (random-natural)
+     :where (natp n))
+  (>= (len (drop-first n xs))
+      (- (len xs) n)))
+
+;; Final
+
+(defun swap-first-two (xs)
+  (if (endp (rest xs))
+      xs
+      (cons (second xs)
+            (cons (first xs)
+                  (rest (rest xs))))))
+
+(defproperty swap-first-two-reverses-itself
+  (xs :value (random-list-of (random-atom)
+                             :size (+ 2 (random-data-size))))
+  (equal (swap-first-two (swap-first-two xs))
+         xs))
+
+(defrandom random-ordered-list-size (size prev)
+  (if (zp size)
+      0
+      (let ((next (+ prev (random-data-size))))
+        (cons next
+              (random-ordered-list-size (- size 1) next)))))
+
+(defrandom random-ordered-list ()
+  (random-ordered-list-size (random-data-size) 0))
+
+(defun big-max (xs)
+  (if (endp (rest xs))
+      (first xs)
+      (max (first xs)
+           (big-max (rest xs)))))
+
+(defun big-min (xs)
+  (if (endp (rest xs))
+      (first xs)
+      (min (first xs)
+           (big-min (rest xs)))))
+
+(defproperty ordered-lists-append
+  (xs :value (random-ordered-list)
+      :where (orderedp xs)
+   ys :value (random-ordered-list)
+      :where (orderedp ys))
+  (implies (< (big-max xs) (big-min ys))
+           (orderedp (append xs ys))))
+
+(defun min-key (tree)
+  (if (endp tree)
+    tree
+    (min (first tree)
+         (min 
+           (if (endp (third tree))
+             (first tree)
+             (min-key (third tree)))
+           (if (endp (fourth tree))
+             (first tree)
+             (min-key (fourth tree)))))))
+
+(defun max-key (tree)
+  (if (endp tree)
+    tree
+    (max (first tree)
+         (max
+           (if (endp (third tree))
+             (first tree)
+             (max-key (third tree)))
+           (if (endp (fourth tree))
+             (first tree)
+             (max-key (fourth tree)))))))
+
+(defun searchablep (tree)
+  (or (endp tree)
+      (and (or (endp (fourth tree))
+               (< (first tree) (min-key (fourth tree))))
+           (or (endp (third tree))
+               (> (first tree) (max-key (third tree))))
+           (searchablep (third tree))
+           (searchablep (fourth tree)))))
+
+(defun keys (tree)
+  (if (endp tree)
+      nil
+      (append (keys (third tree))
+              (first tree)
+              (keys (fourth tree)))))
+
+;(defthm searchable-implies-keys-ordered
+;  (implies (searchablep tree)
+;           (orderedp (keys tree))))
+
+;; Fall 01
+
+;; no new theorems
+
+;; Fall 00
+
+;; no new theorems
 
 
 
