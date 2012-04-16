@@ -1,19 +1,27 @@
 (include-book "doublecheck" :dir :teachpacks)
 
-(defun n-column-matrix? (m n)
-  (or (endp m)
-      (and (true-listp (car m))
-           (= (len (car m)) n)
-           (n-column-matrix? (cdr m) n))))
+;(defun n-column-matrix? (m n)
+;  (or (endp m)
+;      (and (true-listp (car m))
+;           (= (len (car m)) n)
+;           (n-column-matrix? (cdr m) n))))
+;
+;(defun matrix? (m)
+;  (n-column-matrix? m (len (car m))))
 
 (defun matrix? (m)
-  (n-column-matrix? m (len (car m))))
+  (and (true-listp m)
+       (true-listp (car m))
+       (or (not (consp (cdr m)))
+           (and (equal (len (car m))
+                       (len (cadr m)))
+                (matrix? (cdr m))))))
 
 (defun num-rows (m)
-  (length m))
+  (len m))
 
 (defun num-cols (m)
-  (length (car m)))
+  (len (car m)))
 
 (defun append-to-matrix (xs m)
   (if (consp xs)
@@ -26,14 +34,23 @@
       (append-to-matrix (car m) (transpose (cdr m)))
       nil))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun transpose (m)
+  (if (consp m)
+      (if (consp (car m))
+          (cons (cons (caar m) )
+          (transpose (cdr m)))
+      nil))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun blank-matrix (m n)
-  (if (= 0 m)
+  (if (zp m)
       nil
       (cons (make-list n)
             (blank-matrix (1- m) n))))
 
 (defrandom random-matrix (m n)
-  (if (= 0 m)
+  (if (or (zp m) (zp n)) ;needed to admit (can't ignore n)
       nil
       (cons (random-list-of (random-rational) :size n)
             (random-matrix (1- m) n))))

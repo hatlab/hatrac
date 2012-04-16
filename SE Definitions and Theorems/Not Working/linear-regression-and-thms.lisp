@@ -1,12 +1,11 @@
+;;; All theorems in this file are proven - ARS 04/11/12
 (include-book "doublecheck" :dir :teachpacks)
-
-(defun running-avg (n avg xs)
-  (if (not (consp xs))
-      avg
-      (running-avg (1+ n) (/ (+ (* avg n) (car xs)) (1+ n)) (cdr xs))))
+(include-book "arithmetic-5/top" :dir :system)
 
 (defun avg (xs)
-  (running-avg 0 0 xs))
+  (if (consp xs)
+      (/ (+ (* (avg (cdr xs)) (len (cdr xs))) (car xs)) (len xs))
+      0))
 
 (defun vector+scalar (xs s)
   (if (consp xs)
@@ -34,5 +33,5 @@
 
 (defproperty avg-works
   (xs :value (random-list-of (random-rational))
-      :where (consp xs))
+      :where (rational-listp xs))
   (equal (avg xs) (/ (sum xs) (len xs))))

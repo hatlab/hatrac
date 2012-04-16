@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;All the theorems in this file have been proven - ARS 04/11/12;;;;;;;;;;;
 (include-book "linear-encoding-and-thms")
 (include-book "doublecheck" :dir :teachpacks)
 (include-book "list-utilities" :dir :teachpacks)
@@ -34,10 +34,7 @@
            (visible-txt-listp (cdr chrs)))))
 
 (defun viscode-listp (vals)
-  (or (endp vals)
-      (and (>= (car vals) 0)
-           (<= (car vals) 94)
-           (viscode-listp (cdr vals)))))
+  (code-listp 95 vals))
 
 (defproperty visibilize-txt-delivers-list-of-visible-characters
   (chrs :value (random-list-of (random-char))
