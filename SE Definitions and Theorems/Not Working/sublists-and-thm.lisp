@@ -12,11 +12,6 @@
         (append (cons-all (car xs) sub) sub))
       (list nil)))
 
-(defun no-duplicatesp (xs)
-  (or (endp xs)
-      (and (not (member (car xs) (cdr xs)))
-           (no-duplicatesp (cdr xs)))))
-
 (defun sublistp (ys xs)
   (if (consp ys)
       (if (consp xs)
@@ -32,6 +27,7 @@
            (sublist-listp xs (cdr yss)))))
           
 (defproperty sublist-delivers-list-of-sublists
-  (xs :value (random-list-of (random-symbol)))
+  (xs :value (random-list-of (random-symbol))
+      :where (true-listp xs))
   (sublist-listp xs (sublists xs)))
 

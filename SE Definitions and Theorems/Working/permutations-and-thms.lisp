@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;All proven - ARS 4/18/12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (include-book "doublecheck" :dir :teachpacks)
 
 (defun cons-all (x xss)
@@ -35,7 +35,7 @@
       (not ys)))
 
 (defun permutation-listp (xs xss)
-  (or (null xss)
+  (or (endp xss)
       (and (permutationp xs (car xss))
            (permutation-listp xs (cdr xss)))))
 
@@ -79,12 +79,17 @@
       :where (true-listp xs))
   (permutation-listp (cons x xs) (insert-everywhere x xs)))
 
-(defproperty x-is-in-every-list-of-insert-everywhere-in-all
-  (size :value (1+ (random-data-size))
-    xss :value (random-list-of (random-list-of (random-symbol)) :size size)
-      x :value (random-symbol)
-      n :value (random-between 0 (1- size))
-    yss :value (nth n (insert-everywhere-in-all x xss))
-        :where (and (true-list-listp xss) 
-                    (member-equal yss (insert-everywhere-in-all x xss))))
+(defproperty x-is-in-every-list-of-insert-everywhere
+  (xs :value (random-list-of (random-symbol))
+    x :value (random-symbol)
+      :where (true-listp xs))
+  (member-allp x (insert-everywhere x xs)))
+
+(defproperty x-is-in-every-list-of-every-list-of-insert-everywhere-in-all
+  (xss :value (random-list-of (random-list-of (random-symbol)))
+     x :value (random-symbol)
+   yss :value (random-element-of (insert-everywhere-in-all x xss))
+       :where (and (true-list-listp xss)
+                   (true-list-listp yss)
+                   (member-equal yss (insert-everywhere-in-all x xss))))
   (member-allp x yss))
