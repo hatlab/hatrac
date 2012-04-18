@@ -23,22 +23,34 @@
 (defun num-cols (m)
   (len (car m)))
 
-(defun append-to-matrix (xs m)
-  (if (consp xs)
-      (cons (cons (car xs) (car m))
-            (append-to-matrix (cdr xs) (cdr m)))
-      nil))
-
-(defun transpose (m)
-  (if (consp m)
-      (append-to-matrix (car m) (transpose (cdr m)))
-      nil))
+;(defun append-to-matrix (xs m)
+;  (if (consp xs)
+;      (cons (cons (car xs) (car m))
+;            (append-to-matrix (cdr xs) (cdr m)))
+;      nil))
+;
+;(defun transpose (m)
+;  (if (consp m)
+;      (append-to-matrix (car m) (transpose (cdr m)))
+;      nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun map-car (xss)
+  (if (consp xss)
+      (cons (caar xss) (map-car (cdr xss)))
+      nil))
+
+(defun map-cdr (xss)
+  (if (consp xss)
+      (cons (cdar xss) (map-cdr (cdr xss)))
+      nil))
+
 (defun transpose (m)
   (if (consp m)
       (if (consp (car m))
-          (cons (cons (caar m) )
+          (let* ((cars (map-car (cdr m)))
+                 (cdrs (map-cdr (cdr m))))
+          (cons (cons (caar m) cars) (transpose (cons (cdar m) cdrs))))
           (transpose (cdr m)))
       nil))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

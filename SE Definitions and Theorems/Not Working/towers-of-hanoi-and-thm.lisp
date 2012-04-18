@@ -21,10 +21,31 @@
                 (append (list (cons n #\c))
                         (remap towers #\b #\a #\c))))))
 
+(defconst *LABELS* '(#\a #\b #\c))
+
+(defun solutionp (sol)
+  (or (null sol)
+      (and (natp (caar sol)) (member-equal (cdar sol) *LABELS*)
+           (solutionp (cdr sol)))))
+
+(defrandom random-solution (n)
+  (if (zp n)
+      nil
+      (cons (cons (random-data-size) (nth (random-between 0 2) *LABELS*))
+            (random-solution (1- n)))))
+
 (defproperty powers-of-two-identity
   (n :value (random-between 0 40)
      :where (integerp n))
   (equal (+ (expt 2 n) (expt 2 n)) (expt 2 (1+ n))))
+
+(defproperty remap-length-lemma
+  (sol  :value (random-solution (random-data-size))
+   newa :value (random-char)
+   newb :value (random-char)
+   newc :value (random-char)   
+        :where (solutionp sol))
+  (equal (length sol) (length (remap sol newa newb newc))))
 
 (defproperty towers-of-hanoi-size-prp-base
   ()
