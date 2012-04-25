@@ -29,22 +29,22 @@
       (permutationp (cdr xs) (remove1 (car xs) ys))
       (not ys)))
 
-(defproperty quicksort-preserves-elements-alt
-  (xs :value (random-list-of (random-integer))
-    x :value (random-integer) 
-      :where (and (true-listp xs) (member x xs)))
-  (member x (quicksort xs)))
-
-(defproperty quicksort-preserves-elements-alt-2
-  (xs :value (random-list-of (random-integer))
-    x :value (random-integer) 
-      :where (and (true-listp xs) (member x (quicksort xs))))
-  (member x xs))
-
-(defproperty quicksort-preserves-elements
-  (xs :value (random-list-of (random-integer))
-      :where (true-listp xs))
-  (permutationp xs (quicksort xs)))
+;(defproperty quicksort-preserves-elements-alt
+;  (xs :value (random-list-of (random-integer))
+;    x :value (random-integer) 
+;      :where (and (true-listp xs) (member x xs)))
+;  (member x (quicksort xs)))
+;
+;(defproperty quicksort-preserves-elements-alt-2
+;  (xs :value (random-list-of (random-integer))
+;    x :value (random-integer) 
+;      :where (and (true-listp xs) (member x (quicksort xs))))
+;  (member x xs))
+;
+;(defproperty quicksort-preserves-elements
+;  (xs :value (random-list-of (random-integer))
+;      :where (true-listp xs))
+;  (permutationp xs (quicksort xs)))
 
 (defproperty quicksort-works
   (xs :value (random-list-of (random-integer))

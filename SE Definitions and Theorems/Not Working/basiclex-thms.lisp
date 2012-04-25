@@ -1,5 +1,5 @@
 (include-book "basiclex")
-(include-book "../Working/split-blocks-concat-defs")
+(include-book "split-blocks-concat-defs")
 (include-book "doublecheck" :dir :teachpacks)
 
 (defproperty split-at-delim-conserves-vals-tst
