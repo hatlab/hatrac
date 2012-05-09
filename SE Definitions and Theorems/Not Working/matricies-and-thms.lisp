@@ -11,7 +11,9 @@
 
 (defun matrix? (m)
   (and (true-listp m)
+       (consp m)
        (true-listp (car m))
+       (consp (car m))
        (or (not (consp (cdr m)))
            (and (equal (len (car m))
                        (len (cadr m)))
@@ -23,36 +25,36 @@
 (defun num-cols (m)
   (len (car m)))
 
-;(defun append-to-matrix (xs m)
-;  (if (consp xs)
-;      (cons (cons (car xs) (car m))
-;            (append-to-matrix (cdr xs) (cdr m)))
-;      nil))
-;
-;(defun transpose (m)
-;  (if (consp m)
-;      (append-to-matrix (car m) (transpose (cdr m)))
-;      nil))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun map-car (xss)
-  (if (consp xss)
-      (cons (caar xss) (map-car (cdr xss)))
-      nil))
-
-(defun map-cdr (xss)
-  (if (consp xss)
-      (cons (cdar xss) (map-cdr (cdr xss)))
+(defun append-to-matrix (xs m)
+  (if (consp xs)
+      (cons (cons (car xs) (car m))
+            (append-to-matrix (cdr xs) (cdr m)))
       nil))
 
 (defun transpose (m)
   (if (consp m)
-      (if (consp (car m))
-          (let* ((cars (map-car (cdr m)))
-                 (cdrs (map-cdr (cdr m))))
-          (cons (cons (caar m) cars) (transpose (cons (cdar m) cdrs))))
-          (transpose (cdr m)))
+      (append-to-matrix (car m) (transpose (cdr m)))
       nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;(defun map-car (xss)
+;  (if (consp xss)
+;      (cons (caar xss) (map-car (cdr xss)))
+;      nil))
+;
+;(defun map-cdr (xss)
+;  (if (consp xss)
+;      (cons (cdar xss) (map-cdr (cdr xss)))
+;      nil))
+;
+;(defun transpose (m)
+;  (if (consp m)
+;      (if (consp (car m))
+;          (let* ((cars (map-car (cdr m)))
+;                 (cdrs (map-cdr (cdr m))))
+;          (cons (cons (caar m) cars) (transpose (cons (cdar m) cdrs))))
+;          (transpose (cdr m)))
+;      nil))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun blank-matrix (m n)
@@ -67,11 +69,18 @@
       (cons (random-list-of (random-rational) :size n)
             (random-matrix (1- m) n))))
 
-(defproperty transpose-delivers-matrix
-  (m :value (random-matrix (1+ (random-data-size)) 
-                           (1+ (random-data-size)))
-     :where (matrix? m))
-  (matrix? (transpose m)))
+;(IMPLIES (AND (CONSP M)
+;              (NOT (CDR M))
+;              (TRUE-LISTP (CAR M))
+;              (CONSP (CAR M)))
+;         (MATRIX? (APPEND-TO-MATRIX (CAR M) NIL)))
+;
+;(defproperty transpose-delivers-matrix
+;  (m :value (random-matrix (1+ (random-data-size)) 
+;                           (1+ (random-data-size)))
+;     :where (matrix? m))
+;  (matrix? (transpose m)))
+
 
 (defproperty transpose-num-cols-is-original-num-rows
   (m :value (random-matrix (1+ (random-data-size)) 

@@ -47,6 +47,18 @@
         :where (solutionp sol))
   (equal (length sol) (length (remap sol newa newb newc))))
 
+(defproperty solutions-are-true-lists
+  (sol :value (random-solution (random-data-size))
+       :where (solutionp sol))
+  (true-listp sol))
+
+(defproperty length-append-lemma
+  (xs :value (random-list-of (random-symbol))
+   ys :value (random-list-of (random-symbol))
+      :where (and (true-listp xs) (true-listp ys)))
+  (equal (+ (length xs) (length ys))
+         (length (append xs ys))))
+
 (defproperty towers-of-hanoi-size-prp-base
   ()
   (equal (1- (expt 2 1)) (length (towers-of-hanoi 1))))
