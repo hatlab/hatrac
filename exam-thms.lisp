@@ -647,12 +647,6 @@
    (= (len (append xs (list x) ys))
       (+ (len xs) (len ys) 1)))
 
-;(defthm flatten-lemma3
-;   (implies (consp tree)
-;            (= (len (flatten tree))
-;               (+ 1 (len (flatten (third tree)))
-;                    (len (flatten (fourth tree)))))))
-
 (defproperty flatten-has-size-elems
   (tree :value (random-tree))
   (= (len (flatten tree))
@@ -682,7 +676,7 @@
   (xs :value (random-list-of (random-rational)))
   (= (sum (map-double xs))
      (double (sum xs))))
-
+;
 ;(defproperty maximum-binary-numeral
 ;  (n :value (random-natural)
 ;     :where (natp n))
@@ -712,12 +706,6 @@
    xs :value (random-list-of (random-rational)))
   (<= (first (insert x xs))
       x))
-
-(defproperty insert-increments-length
-  (x :value (random-rational)
-   xs :value (random-list-of (random-rational)))
-  (= (len (insert x xs))
-     (+ 1 (len xs))))
 
 (defun flatten-tail (tree xs)
   (if (endp tree)
@@ -768,21 +756,21 @@
                 (rational-listp xs))
            (rationalp (sumr z xs))))
 
-(defun ps-+ (z xs)
+(defun partial-+ (z xs)
   (if (endp xs)
       (list z)
-      (cons z (ps-+ (+ z (first xs)) (rest xs)))))
+      (cons z (partial-+ (+ z (first xs)) (rest xs)))))
 
-(defproperty ps-len
+(defproperty partial-len
   (z :value (random-rational)
    xs :value (random-list-of (random-rational)))
-  (= (len (ps-+ z xs))
+  (= (len (partial-+ z xs))
      (+ 1 (len xs))))
 
-;(defproperty rac-ps-+-=-sum
+;(defproperty rac-partial-+-=-sum
 ;  (xs :value (random-list-of (random-rational))
 ;      :where (rational-listp xs))
-;  (= (rac (ps-+ 0 xs))
+;  (= (rac (partial-+ 0 xs))
 ;     (sumr 0 xs)))
 
 (defun key-in-tree (e tree)
@@ -795,8 +783,8 @@
 (defproperty in-tree-implies-in-flatten-tree
   (tree :value (random-tree)
    e :value (random-natural))
-  (implies (key-in-tree e tree)
-           (member e (flatten tree))))
+  (iff (key-in-tree e tree)
+       (member e (flatten tree))))
 
 ;; Fall 03
 
@@ -852,13 +840,6 @@
   (ys :value (random-list-of (random-natural)))
   (equal (first (add-back nil ys))
          (first ys)))
-
-(defproperty first-add-back-xs-ys-is-rac-xs
-  (xs :value (random-list-of (random-natural))
-   ys :value (random-list-of (random-natural)))
-  (implies (consp xs)
-           (equal (first (add-back xs ys))
-                  (rac xs))))
 
 ; Node format: (cons left right) or just a character
 (defun decode (tree bs)
@@ -923,12 +904,11 @@
         (t (cons (third xs)
                  (throdds (rest (rest (rest xs))))))))
 
-;(defproperty len-throdds
-;  (xs :value (random-list-of (random-atom)
-;                             :size (* 3 (random-data-size))))
-;  (implies (= (mod (len xs) 3) 0)
-;           (= (len (throdds xs))
-;              (floor (len xs) 3))))
+(defproperty len-throdds
+  (xs :value (random-list-of (random-atom)
+                             :size (* 3 (random-data-size))))
+  (= (len (throdds xs))
+     (floor (len xs) 3)))
 
 (defun sum-tree (tree)
   (if (endp tree)
