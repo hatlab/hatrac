@@ -19,3 +19,10 @@
   (b :value (random-natural)
    n :value (random-natural))
   (= (pow b n) (rp b n)))
+
+(defproperty rp-equivalent-to-expt
+   (b :value (random-natural)
+      :where (natp b)
+    n :value (random-natural)
+      :where (natp n))
+   (= (rp b n) (expt b n)))
