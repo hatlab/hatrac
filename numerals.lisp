@@ -98,7 +98,7 @@
                (= (first ds) 1))
            (all-bitsp (rest ds)))))
 
-(defproperty bits-reutrns-all-bits
+(defproperty bits-returns-all-bits
   (n :where (natp n) :value (random-natural))
   (all-bitsp (bits n)))
 
