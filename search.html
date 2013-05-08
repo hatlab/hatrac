@@ -10,6 +10,7 @@
     background: #eee;
     border: solid #ddd;
     border-width: 1px 0;
+    line-height: 200%;
   }
   html {
     font-family: sans-serif;
@@ -41,10 +42,14 @@
     margin-left: 15px;
     background: #ddd;
     font-size: 12px;
+    line-height: 100%;
     font-variant: small-caps;
   }
   label {
     cursor: pointer;
+  }
+  input.filter_button + label {
+    border: solid transparent 2px;
   }
   input.filter_button:checked + label {
     border: solid red 2px;
@@ -144,31 +149,6 @@
 
 <div id="filters">
 Filter: <input type="search" id="filter" />
-<!--
-<input type="checkbox" class="cat_filter" id="cat_0" />
-<label for="cat_0" class="cat_0">Miscellaneous</label>
-<input type="checkbox" class="cat_filter" id="cat_1" />
-<label for="cat_1" class="cat_1">Function Equality</label>
-<input type="checkbox" class="cat_filter" id="cat_2" />
-<label for="cat_2" class="cat_2">Round Trip</label>
-<input type="checkbox" class="cat_filter" id="cat_3" />
-<label for="cat_3" class="cat_3">Property Preservation</label>
-<input type="checkbox" class="cat_filter" id="cat_4" />
-<label for="cat_4" class="cat_4">Round Trip</label>
-<input type="checkbox" class="cat_filter" id="cat_5" />
-<label for="cat_5" class="cat_5">Round Trip</label>
-
-<span class="divider"></span>
-
-<input type="checkbox" class="cat_filter" id="size_0" />
-<label for="size_0" class="size_0">Tiny</label>
-<input type="checkbox" class="cat_filter" id="size_1" />
-<label for="size_1" class="size_1">Small</label>
-<input type="checkbox" class="cat_filter" id="size_2" />
-<label for="size_2" class="size_2">Medium</label>
-<input type="checkbox" class="cat_filter" id="size_3" />
-<label for="size_3" class="size_3">Large</label>
--->
 </div>
 <div id="results">
   <div id="no_results">No results.</div>

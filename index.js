@@ -4,7 +4,7 @@
   var EQUAL = 1;
   var ROUND_TRIP = 2;
   var PROPERTY = 3;
-  var categories = [MISC, EQUAL, ROUND_TRIP, PROPERTY];
+  var categories = [];
   var cat_names = {}
   cat_names[MISC] = "Miscellaneous";
   cat_names[EQUAL] = "Function Equality";
@@ -111,38 +111,43 @@
 
   window.onload = function() {
     var filters = document.getElementById('filters');
-    // Create the filter buttons
-    var rendered_filters = ''
-    for (var i in categories) {
-      rendered_filters += render_with(FILTER_TMPL,
-          { type: 'cat',
-            id: categories[i],
-            name: cat_names[categories[i]] });
-    }
-    rendered_filters += '<span class="divider"></span>';
-    for (var i = 0; i < size_names.length; i++) {
-      rendered_filters += render_with(FILTER_TMPL,
-          { type: 'size',
-            id: i,
-            name: size_names[i] });
-    }
-    filters.innerHTML += rendered_filters
     // Render the theorems
     var results = document.getElementById("results");
     var rendered = '';
     for (var idx in theorems) {
       var theorem = theorems[idx];
       theorem.id = idx;
-      theorem.cat_name = cat_names[theorem.category];
+      theorem.cat_name = theorem.category;
+      if (categories.indexOf(theorem.cat_name) == -1) {
+          categories.push(theorem.cat_name);
+      }
       all.push(idx);
       rendered += render_with(THM_TMPL, theorem);
     }
     results.innerHTML += rendered;
+
+    // Create the filter buttons
+    var rendered_filters = ''
+    for (var i in categories) {
+      rendered_filters += render_with(FILTER_TMPL,
+          { type: 'cat',
+            id: i,
+            name: categories[i] });
+    }
+    // rendered_filters += '<span class="divider"></span>';
+    // for (var i = 0; i < size_names.length; i++) {
+    //   rendered_filters += render_with(FILTER_TMPL,
+    //       { type: 'size',
+    //         id: i,
+    //         name: size_names[i] });
+    // }
+    filters.innerHTML += rendered_filters
+
     parse_hash();
     var filter = document.getElementById('filter');
     filter.onkeyup = filter.onclick = check_filters;
     for (var i in categories) {
-      document.getElementById("cat_" + categories[i]).onchange = check_filters;
+      document.getElementById("cat_" + i).onchange = check_filters;
     }
   }
 })();

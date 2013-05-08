@@ -57,19 +57,28 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     <h1>HATRAC</h1>
     <p class="lead">High Assurance Teaching Resources in <abbr title="A Computational Logic for Applicative Common Lisp">ACL2</abbr> Code.</p>
     <p class="lead"><span class="counter">1</span><span class="counter">2</span><span class="counter">3</span>&nbsp;&nbsp; verified theorems (and counting).</p>
-    <form>
-            <input type="text" class="search-query" placeholder="Ex. Append, Commutativity, cons">
+    <form action="javascript:submit();">
+            <input type="text" id="q" class="search-query" placeholder="Ex. Append, Commutativity, cons">
             <button type="submit" class="btn btn-primary btn-large">Search</button>
     </form>
     <div class="controls controls-row">
-        <a href="" class="btn btn-large span2 offset1"><img src="helicopter.png"> Beginner</a>
-        <a href="" class="btn btn-large span2"><img src="http://placehold.it/80x65"> Intermediate</a>
-        <a href="" class="btn btn-large span2"><img src="deerstalker.png">Advanced</a> </div></div>
+        <a href="/search.html#size=beginner" class="btn btn-large span2 offset1"><img src="helicopter.png"> Beginner</a>
+        <a href="/search.html#size=intermediate" class="btn btn-large span2"><img src="cap.png"> Intermediate</a>
+        <a href="/search.html#size=advanced" class="btn btn-large span2"><img src="deerstalker.png">Advanced</a> </div></div>
+<!--
 <div class="row">
     <div class="span4">Some</div>
     <div class="span4">Examples</div>
     <div class="span4">Here</div>
 </div>
+-->
 </div>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script>
+    function submit() {
+        var q = document.getElementById("q").value;
+        window.location.href = "/search.html#q=" + q;
+        console.log("YEAHHHHH");
+    }
+</script>
