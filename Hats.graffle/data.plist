@@ -34,7 +34,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-05-08 15:34:55 +0000</string>
+	<string>2013-05-08 19:17:29 +0000</string>
 	<key>Modifier</key>
 	<string>Caleb Eggensperger</string>
 	<key>NotesVisible</key>
@@ -1198,7 +1198,7 @@
 			<key>BackgroundGraphic</key>
 			<dict>
 				<key>Bounds</key>
-				<string>{{0, 0}, {427, 315}}</string>
+				<string>{{0, 0}, {427, 432}}</string>
 				<key>Class</key>
 				<string>SolidGraphic</string>
 				<key>ID</key>
@@ -1222,7 +1222,7 @@
 			<key>CanvasOrigin</key>
 			<string>{0, 0}</string>
 			<key>CanvasSize</key>
-			<string>{427, 315}</string>
+			<string>{427, 432}</string>
 			<key>ColumnAlign</key>
 			<integer>1</integer>
 			<key>ColumnSpacing</key>
@@ -1233,7 +1233,7 @@
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{256.09192143478572, 84.481176649849573}, {105.82495905706622, 151.09834371416974}}</string>
+					<string>{{256.09192141615927, 142.98117579303283}, {105.82495905706622, 151.09834371416974}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1292,7 +1292,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{60.245629020413745, 3.117436154035663}, {201.86594706246373, 213.91341502493054}}</string>
+					<string>{{60.245629001787293, 61.617435297218925}, {201.86594706246373, 213.91341502493054}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -1359,7 +1359,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{7.2271422621622046, 173.3173985160046}, {412.54571108678158, 138.66957073324284}}</string>
+					<string>{{7.2271422435357531, 231.81739765918786}, {412.54571108678158, 138.66957073324284}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>HFlip</key>
@@ -1431,7 +1431,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{57.202905285847038, 170.14519302309927}, {309.66767906928271, 106.50052998145645}}</string>
+					<string>{{57.202905267220586, 228.64519216628253}, {309.66767906928271, 106.50052998145645}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>HFlip</key>
@@ -1494,7 +1494,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{57.407482787862278, 3.0130308284466354}, {309.00000000000057, 272.85818312925318}}</string>
+					<string>{{57.407482769235827, 61.513029971629898}, {309.00000000000057, 272.85818312925318}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>HFlip</key>
@@ -1570,7 +1570,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{18.414788150316291, 159.13458951898795}, {45.492696507495566, 43.921569448762057}}</string>
+					<string>{{18.414788131689839, 217.63458866217121}, {45.492696507495566, 43.921569448762057}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>HFlip</key>
@@ -1624,7 +1624,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{359.01559932507968, 166.36875791249858}, {58.140481111626968, 110.02073575988086}}</string>
+					<string>{{359.01559930645323, 224.86875705568184}, {58.140481111626968, 110.02073575988086}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>HFlip</key>
@@ -1684,7 +1684,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{200.37807544503707, 199.91890400712413}, {188.78794321431025, 97.652542577279746}}</string>
+					<string>{{200.37807542641062, 258.41890315030741}, {188.78794321431025, 97.652542577279746}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>HFlip</key>
@@ -2517,21 +2517,22 @@
 						hIQITlNPYmplY3QAhZKEhIQITlNT
 						dHJpbmcBlIQBKwRBQ0wyhoQCaUkB
 						BJKEhIQMTlNEaWN0aW9uYXJ5AJSE
-						AWkEkoSWlg5OU09yaWdpbmFsRm9u
-						dIaShISEBk5TRm9udB6UmRyEBVsy
-						OGNdBgAAABQAAAD//kgAZQBsAHYA
-						ZQB0AGkAYwBhAIQBZgyEAWMAnQGd
-						AJ0AhpKElpYQTlNQYXJhZ3JhcGhT
-						dHlsZYaShISEF05TTXV0YWJsZVBh
-						cmFncmFwaFN0eWxlAISEEE5TUGFy
-						YWdyYXBoU3R5bGUAlIQEQ0NAUwIA
-						hYEACIQEWzFmXYPNzEw9hpKElpYG
-						TlNGb250hpKEm5kghAVbMzJjXQYA
-						AAAWAAAA//5MAG8AYgBzAHQAZQBy
-						ADEALgAzAAAAnCidAJ0BnQCdAIaS
-						hJaWB05TQ29sb3KGkoSEhAdOU0Nv
-						bG9yAJSdAYQEZmZmZgEBAYPNzAw/
-						hoaG
+						AWkDkoSWlgdOU0NvbG9yhpKEhIQH
+						TlNDb2xvcgCUhAFjA4QCZmYBg83M
+						DD+GkoSWlhBOU1BhcmFncmFwaFN0
+						eWxlhpKEhIQQTlNQYXJhZ3JhcGhT
+						dHlsZQCUhARDQ0BTAgCEhIQHTlNB
+						cnJheQCUmQyShISECU5TVGV4dFRh
+						YgCUhAJDZgAchpKEoqEAOIaShKKh
+						AFSGkoSioQBwhpKEoqEAgYwAhpKE
+						oqEAgagAhpKEoqEAgcQAhpKEoqEA
+						geAAhpKEoqEAgfwAhpKEoqEAgRgB
+						hpKEoqEAgTQBhpKEoqEAgVABhoaB
+						AAiEBFsxZl2DzcxMPYaShJaWBk5T
+						Rm9udIaShISEBk5TRm9udB6UmSCE
+						BVszMmNdBgAAABYAAAD//kwAbwBi
+						AHMAdABlAHIAMQAuADMAAACEAWYo
+						mwCbAZsAmwCGhoY=
 						</data>
 						<key>Text</key>
 						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf370
@@ -2961,7 +2962,7 @@
 	<key>WindowInfo</key>
 	<dict>
 		<key>CurrentSheet</key>
-		<integer>3</integer>
+		<integer>1</integer>
 		<key>ExpandedCanvases</key>
 		<array/>
 		<key>Frame</key>
@@ -2979,9 +2980,9 @@
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-140.99999999999997, -104}, {695.57522417412497, 533.62832083587443}}</string>
+		<string>{{-260, -144}, {982.49998535960935, 753.74998876824986}}</string>
 		<key>Zoom</key>
-		<real>1.1299999952316284</real>
+		<real>0.80000001192092896</real>
 		<key>ZoomValues</key>
 		<array>
 			<array>
